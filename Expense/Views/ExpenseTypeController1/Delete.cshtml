@@ -1,0 +1,37 @@
+﻿@model Expense.Models.ExpensetypeViewModel
+
+@{
+    ViewData["Title"] = "Delete Expense Type";
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr/>
+@if (!string.IsNullOrWhiteSpace(errorMessage)){
+    <div class="alert alert-danger">
+        <strong>Error!</strong>@errorMessage
+        <button type="button" class="btn btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form action="Delete" method="post">
+    <div class="mb-3">
+        <label class="form-label">ExpenseTypeID</label>
+        <input type="text" class="form-control" asp-for="ExpenseTypeID" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Code</label>
+        <input type="text" class="form-control" asp-for="Code" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="Description" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure to delete this expense type : @Model.Code ?')">Delete</button>
+    </div>
+</form>

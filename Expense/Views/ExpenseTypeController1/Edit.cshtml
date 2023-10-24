@@ -1,0 +1,31 @@
+﻿@model Expense.Models.ExpensetypeViewModel
+
+@{
+    ViewData["Title"] = "Edit Expense Type";
+}
+<h3>@ViewData["Title"]</h3>
+<hr/>
+<form action="Edit" method="post">
+    <div class="mb-3">
+        <label class="form-label">ExpenseTypeID</label>
+        <input type="text" class="form-control" asp-for="ExpenseTypeID" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Code</label>
+        <input type="text" class="form-control" asp-for="Code" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="Description" />
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-success">Update</button>      
+    </div>
+</form>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

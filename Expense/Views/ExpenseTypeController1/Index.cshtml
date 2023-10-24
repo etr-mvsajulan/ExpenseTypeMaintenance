@@ -20,11 +20,16 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
 {
     <div class="alert alert-danger">
         <strong>Error!</strong>@errorMessage
-        <button type="button" class="btnbtn-close float-end" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn btn-close float-end" data-bs-dismiss="alert"></button>
     </div>
     
 }
+ 
 <form>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get)){
+        @Html.TextBox("searchs")<input type="submit" value="Search" placeholder="Search description" />
+    }
+    
     <button asp-action="Create" asp-controller="ExpenseTypeController1" class="btn btn-primary mb-3">Create Expense Type</button>
     <table class="table table-responsive table-hover table-bordered">
         <thead>
@@ -45,10 +50,10 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
                         <td>@expensetype.Description</td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <a asp-controller="Expense" asp-action="Edit" asp-route-id="@expensetype.ExpenseTypeID" class="btn btn-primary">Edit</a>                            
+                                <a asp-controller="ExpenseTypeController1" asp-action="Edit" asp-route-id="@expensetype.ExpenseTypeID" class="btn btn-primary">Edit</a>
                             </div>
                             <div class="btn-group btn-group-sm">
-                                <a asp-controller="Expense" asp-action="Delete" asp-route-id="@expensetype.ExpenseTypeID" class="btn btn-danger">Delete</a>
+                                <a asp-controller="ExpenseTypeController1" asp-action="Delete" asp-route-id="@expensetype.ExpenseTypeID" class="btn btn-danger">Delete</a>
                             </div>
                         </td>
                     </tr>
