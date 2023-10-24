@@ -11,5 +11,9 @@ namespace Expense.Models
         public string Code { get; set; }
         [DisplayName("Description")]
         public string Description { get; set; }
+
+
+
+
     }
 }

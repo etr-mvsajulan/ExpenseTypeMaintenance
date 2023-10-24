@@ -26,8 +26,18 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
 }
  
 <form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Auto-select the text input field after page refresh
+            // Auto-select the text input field after page refresh
+            var $searchInput = $("#searchs-input");
+            var inputValue = $searchInput.val();
+            $searchInput.focus().val("").val(inputValue);
+        });
+    </script>
     @using (Html.BeginForm("Index", "Home", FormMethod.Get)){
-        @Html.TextBox("searchs")<input type="submit" value="Search" placeholder="Search description" />
+        @Html.TextBox("searchs", null, new {@oninput = "this.form.submit();", id = "searchs-input"})<input type="submit" value="Search" placeholder="Search description" />
     }
     
     <button asp-action="Create" asp-controller="ExpenseTypeController1" class="btn btn-primary mb-3">Create Expense Type</button>

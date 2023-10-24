@@ -17,7 +17,7 @@ namespace Expense.Controllers
         [HttpGet]
         public IActionResult Index(string searchs)
         {
-            var ExpenseType = _context.ExpenseTypes.Where(x=> x.Description.Contains(searchs) || searchs==null).ToList();
+            var ExpenseType = _context.ExpenseTypes.Where(x=> x.Description.Contains(searchs) || searchs==null).ToList().OrderBy(a=> a.Code);
             List<ExpensetypeViewModel> expensetypeList = new List<ExpensetypeViewModel>();
             if (ExpenseType != null) 
             {
