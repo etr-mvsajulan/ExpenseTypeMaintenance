@@ -9,5 +9,6 @@ namespace Expense.DAL
         }
 
         public DbSet<ExpenseMaintenance> ExpenseTypes { get; set; }
+
     }
 }

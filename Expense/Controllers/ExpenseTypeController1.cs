@@ -9,32 +9,28 @@ namespace Expense.Controllers
 {
     public class ExpenseTypeController1 : Controller
     {
-        private readonly ExpenseTypeDBContext _context;
-        public ExpenseTypeController1(ExpenseTypeDBContext context)
+        private readonly IExpenseTypeService _expenseTypeService;
+
+        public ExpenseTypeController1(IExpenseTypeService expenseTypeService)
         {
-            this._context = context;
+            this._expenseTypeService = expenseTypeService;
         }
         [HttpGet]
-        public IActionResult Index(string searchs)
-        {
-            var ExpenseType = _context.ExpenseTypes.Where(x=> x.Description.Contains(searchs) || searchs==null).ToList().OrderBy(a=> a.Code);
-            List<ExpensetypeViewModel> expensetypeList = new List<ExpensetypeViewModel>();
-            if (ExpenseType != null) 
-            {
-                
-                foreach (var ExpenseT in ExpenseType)
-                {
-                    var ExpensetypeViewModel = new ExpensetypeViewModel()
-                    {
-                        ExpenseTypeID = ExpenseT.ExpenseTypeID,
-                        Code = ExpenseT.Code,
-                        Description = ExpenseT.Description
-                    };
-                    expensetypeList.Add(ExpensetypeViewModel);
-                }
-                return View(expensetypeList);
-            }
-            return View(expensetypeList);
+        public IActionResult Index(string searchs, int pg = 1)
+        {         
+
+            var expenseTypeList = _expenseTypeService.GetExpensetypes(searchs);
+
+            const int pageSize = 5;
+            if (pg < 1)
+                pg = 1;
+
+            int recsCount = expenseTypeList.Count();
+            var pager = new Pager(pg, pageSize, recsCount);
+            int recSkip = (pg - 1) * pageSize;
+            var data = expenseTypeList.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            return View(data);
         }
         [HttpGet]
         public IActionResult Create()
@@ -48,14 +44,7 @@ namespace Expense.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var expensetype = new ExpenseMaintenance
-                    {
-                        Code = expensetypeData.Code,
-                        Description = expensetypeData.Description
-                    };
-
-                    _context.ExpenseTypes.Add(expensetype);
-                    _context.SaveChanges();
+                    _expenseTypeService.CreateExpenseType(expensetypeData);
                     TempData["successMessage"] = "Expense type created successfully!";
                     return RedirectToAction("Index");
                 }
@@ -78,15 +67,9 @@ namespace Expense.Controllers
         {
             try
             {
-                var expensetype = _context.ExpenseTypes.SingleOrDefault(x => x.ExpenseTypeID == ID);
-                if (expensetype != null)
-                {
-                    var expensetypeView = new ExpensetypeViewModel()
-                    {
-                        ExpenseTypeID = expensetype.ExpenseTypeID,
-                        Code = expensetype.Code,
-                        Description = expensetype.Description
-                    };
+                var expensetypeView = _expenseTypeService.GetExpenseTypeById(ID);
+                if (expensetypeView != null)
+                {                    
                     return View(expensetypeView);
                 }
                 else
@@ -109,18 +92,9 @@ namespace Expense.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var expensetype = new ExpenseMaintenance()
-                    {
-                        ExpenseTypeID = model.ExpenseTypeID,
-                        Code = model.Code,
-                        Description = model.Description
-                    };
-                    _context.ExpenseTypes.Update(expensetype);
-                    _context.SaveChanges();
+                    _expenseTypeService.UpdateExpenseType(model);
                     TempData["successMessage"] = "Expense Type updated successfully!";
                     return RedirectToAction("Index");
-
-
                 }
                 else
                 {
@@ -139,16 +113,10 @@ namespace Expense.Controllers
         {
             try
             {
-                var expensetype = _context.ExpenseTypes.SingleOrDefault(x => x.ExpenseTypeID == ID);
-                if (expensetype != null)
-                {
-                    var expensetypeView = new ExpensetypeViewModel()
-                    {
-                        ExpenseTypeID = expensetype.ExpenseTypeID,
-                        Code = expensetype.Code,
-                        Description = expensetype.Description
-                    };
-                    return View(expensetypeView);
+                var expenseTypeView = _expenseTypeService.GetExpenseTypeById(ID);
+                if (expenseTypeView != null)
+                {                   
+                    return View(expenseTypeView);
                 }
                 else
                 {
@@ -168,18 +136,16 @@ namespace Expense.Controllers
         public IActionResult Delete(ExpensetypeViewModel model)
         {
             try
-            {
-                var expensetypeView = _context.ExpenseTypes.SingleOrDefault(x => x.ExpenseTypeID == model.ExpenseTypeID);
-                if (expensetypeView != null)
+            {             
+                if (model != null)
                 {
-                    _context.ExpenseTypes.Remove(expensetypeView);
-                    _context.SaveChanges();
+                    _expenseTypeService.DeleteExpenseType(model.ExpenseTypeID);
                     TempData["successMessage"] = "Expense type deleted successfully";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["errorMessage"] = $"Expense type id = {model.ExpenseTypeID}";
+                    TempData["errorMessage"] = $"Expense type id = {model?.ExpenseTypeID}";
                     return View();
                 }
             }
