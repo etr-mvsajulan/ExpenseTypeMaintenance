@@ -36,7 +36,8 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
     </div>
     
 }
- 
+
+<link href="~/css/paginationdesign.css" rel="stylesheet" />
 <form> 
 
     <button asp-action="Create" asp-controller="ExpenseTypeController1" class="btn btn-primary mb-3">Create Expense Type</button>
@@ -91,7 +92,7 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
             }
         </tbody>
     </table>
-    <div class="container">
+   @*  <div class="container">
         @if (ViewBag.Pager.TotalPages > 1)
         {
             <ul class="pagination justify-content-end">
@@ -124,5 +125,19 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
             </ul>
         }
         
+    </div> *@
+    <div class="pagination-container">
+        <a class="pagination-button @(ViewBag.CurrentPage == 1 ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Previous</a>
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.FirstPage ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.FirstPage, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">First</a>
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <a class="pagination-button @(i == ViewBag.CurrentPage ? "active" : "")" href="@Url.Action("Index", new { page = i, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">@i</a>
+        }
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.LastPage ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.LastPage, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Last</a>
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Next</a>
     </div>
 </form>

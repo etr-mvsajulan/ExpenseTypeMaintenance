@@ -28,15 +28,7 @@ namespace Expense.DAL
                 ExpenseTypeID = x.ExpenseTypeID,
                 Code = x.Code,
                 Description = x.Description
-            }).ToList();
-
-            //int totalItems = expenseTypes.Count;
-            //int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
-
-            //var pagedExpenseTypes = expenseTypes
-            //    .Skip((currentPage - 1) * itemsPerPage)
-            //    .Take(itemsPerPage)
-            //    .ToList();
+            }).ToList().OrderBy(x=> x.ExpenseTypeID);
 
             return expenseTypes;
         }

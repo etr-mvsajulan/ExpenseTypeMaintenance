@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
 using System.Security.Cryptography.Xml;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Expense.Controllers
 {
@@ -17,27 +18,36 @@ namespace Expense.Controllers
             this._expenseTypeService = expenseTypeService;
         }
         [HttpGet]
-        public IActionResult Index(string searchs, int page = 1, int currentPage = 1, int itemsPerPage = 10)
+        public IActionResult Index(string searchs, int page = 1, int currentPage = 1, int itemsPerPage = 5)
         {
 
             var expenseTypeList = _expenseTypeService.GetExpensetypes(searchs, page, currentPage, itemsPerPage);
 
-
-            if (page < 1)
-                page = 1;
-
-            int recsCount = expenseTypeList.Count();
-            var pager = new Pager(page, currentPage, recsCount);
-
-            int recSkip = (pager.CurrentPage - 1) * itemsPerPage;
-            var data = expenseTypeList.Skip(recSkip).Take(itemsPerPage).ToList();
-
             // Calculate the start and end pages based on the maxPages
-            
 
-            ViewBag.Pager = pager;
+            //int skip = (page - 1) * itemsPerPage;
+            //var itemsOnPage = expenseTypeList.Skip(skip).Take(itemsPerPage).ToList();
+            //int totalPages = (int)Math.Ceiling((double)expenseTypeList.Count() / itemsPerPage);
 
-            return View(data);
+            //// Pass the items, search term, and pagination information to the view
+            //ViewBag.CurrentPage = page;
+            //ViewBag.TotalPages = totalPages;
+            //ViewBag.SearchTerm = searchs;
+            //ViewBag.ItemsPerPage = itemsPerPage;
+            int skip = (page - 1) * itemsPerPage;
+            var itemsOnPage = expenseTypeList.Skip(skip).Take(itemsPerPage).ToList();
+            int totalPages = (int)Math.Ceiling((double)expenseTypeList.Count() / itemsPerPage);
+
+            // Pass the items, search term, and pagination information to the view
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchTerm = searchs;
+            ViewBag.ItemsPerPage = itemsPerPage;
+
+            // Calculate "First" and "Last" pages
+            ViewBag.FirstPage = 1;
+            ViewBag.LastPage = totalPages;
+            return View(itemsOnPage);
         }
         [HttpGet]
         public IActionResult Create()
