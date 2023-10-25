@@ -1,4 +1,6 @@
-﻿@model List<Expense.Models.ExpensetypeViewModel>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IEnumerable<Expense.Models.ExpensetypeViewModel>
 
 @{
     ViewData["Title"] = "Expense Type Details";
@@ -35,35 +37,26 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
     
 }
  
-<form>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // Auto-select the text input field after page refresh
-            // Auto-select the text input field after page refresh
-            var $searchInput = $("#searchs-input");
-            var inputValue = $searchInput.val();
-            $searchInput.focus().val("").val(inputValue);
-        });
-    </script>
-    @using (Html.BeginForm("Index", "Home", FormMethod.Get)){
-       <div class="row justify-content-end">
-        <div class="col-auto">
-            @Html.TextBox("searchs", null, new { @oninput = "this.form.submit();", id = "searchs-input", @class = "form-control", placeholder = "Search description" })
-        </div>
-        <div class="col-auto">
-            <input type="submit" value="Search" class="btn btn-primary" />
-        </div>
-    </div>
-    }
-    
+<form> 
+
     <button asp-action="Create" asp-controller="ExpenseTypeController1" class="btn btn-primary mb-3">Create Expense Type</button>
+
+        @using (Html.BeginForm("Index", "ExpenseTypeController1", FormMethod.Get))
+        {
+            <div class="float-end">
+            @Html.TextBox("searchs")
+
+            <input type="submit" value="Search" placeholder="Search description"/>
+            </div>
+            
+        }
+
     <table class="table table-responsive table-hover table-bordered">
         <thead>
             <tr class="table-active">
-                <th>Id</th>
-                <th>Code</th>
-                <th>Description</th>
+                <th>@Html.DisplayName("Id")</th>
+                <th>@Html.DisplayName("Code")</th>
+                <th>@Html.DisplayName("Description")</th>
             </tr>
         </thead>
         <tbody>
@@ -72,9 +65,9 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
                 @foreach (var expensetype in Model)
                 {
                     <tr>
-                        <td>@expensetype.ExpenseTypeID</td>
-                        <td>@expensetype.Code</td>
-                        <td>@expensetype.Description</td>
+                        <td>@Html.DisplayFor(modelitem=> expensetype.ExpenseTypeID)</td>
+                        <td>@Html.DisplayFor(modelitem=> expensetype.Code)</td>
+                        <td>@Html.DisplayFor(modelitem=> expensetype.Description)</td>
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a asp-controller="ExpenseTypeController1" asp-action="Edit" asp-route-id="@expensetype.ExpenseTypeID" class="btn btn-primary">Edit</a>
@@ -98,41 +91,38 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
             }
         </tbody>
     </table>
-
     <div class="container">
-        @if (pager.TotalPages > 0)
+        @if (ViewBag.Pager.TotalPages > 1)
         {
             <ul class="pagination justify-content-end">
-                @if (pager.CurrentPage > 1)
+                @if (ViewBag.Pager.CurrentPage > 1)
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="=Index" asp-route-pg="1">First</a>
+                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="1">First</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="=Index" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
                     </li>
                 }
-                
-                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                {
-                    <li class="page-item @(pge == pager.CurrentPage ? "active" : "")")>
-                        <a class="page-link" asp-asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-pg="@pge">@pge</a>
-                    </li>
 
+                @for (var pge = ViewBag.Pager.StartPage; pge <= ViewBag.Pager.EndPage; pge++)
+                {
+                    <li class="page-item @(pge == ViewBag.Pager.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@pge">@pge</a>
+                    </li>
                 }
 
-                @if (pager.CurrentPage < pager.TotalPages)
+                @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="=Index" asp-route-pg="@(pager.CurrentPage +1)">Next</a>
+                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@(ViewBag.Pager.CurrentPage + 1)">Next</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="=Index" asp-route-pg="@(pager.TotalPages)">Last</a>
+                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@ViewBag.Pager.TotalPages">Last</a>
                     </li>
                 }
             </ul>
         }
-
         
     </div>
 </form>

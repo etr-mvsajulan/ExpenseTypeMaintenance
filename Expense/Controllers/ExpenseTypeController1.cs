@@ -4,6 +4,7 @@ using Expense.Models.DBEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
+using System.Security.Cryptography.Xml;
 
 namespace Expense.Controllers
 {
@@ -16,29 +17,37 @@ namespace Expense.Controllers
             this._expenseTypeService = expenseTypeService;
         }
         [HttpGet]
-        public IActionResult Index(string searchs, int pg = 1)
-        {         
+        public IActionResult Index(string searchs, int page = 1, int currentPage = 1, int itemsPerPage = 10)
+        {
 
-            var expenseTypeList = _expenseTypeService.GetExpensetypes(searchs);
+            var expenseTypeList = _expenseTypeService.GetExpensetypes(searchs, page, currentPage, itemsPerPage);
 
-            const int pageSize = 5;
-            if (pg < 1)
-                pg = 1;
+
+            if (page < 1)
+                page = 1;
 
             int recsCount = expenseTypeList.Count();
-            var pager = new Pager(pg, pageSize, recsCount);
-            int recSkip = (pg - 1) * pageSize;
-            var data = expenseTypeList.Skip(recSkip).Take(pager.PageSize).ToList();
-            this.ViewBag.Pager = pager;
+            var pager = new Pager(page, currentPage, recsCount);
+
+            int recSkip = (pager.CurrentPage - 1) * itemsPerPage;
+            var data = expenseTypeList.Skip(recSkip).Take(itemsPerPage).ToList();
+
+            // Calculate the start and end pages based on the maxPages
+            
+
+            ViewBag.Pager = pager;
+
             return View(data);
         }
         [HttpGet]
         public IActionResult Create()
         {
+            string sequence = _expenseTypeService.GenerateCode();
+            ViewData["ExpenseSequence"] = sequence;
             return View();
         }
 
-        public IActionResult Create(ExpensetypeViewModel expensetypeData)
+        public IActionResult Create(CreateExpenseTypeModel expensetypeData)
         {
             try
             {
@@ -86,7 +95,7 @@ namespace Expense.Controllers
             
         }
         [HttpPost]
-        public IActionResult Edit(ExpensetypeViewModel model)
+        public IActionResult Edit(UpdateExpenseTypeModel model)
         {
             try
             {
@@ -157,5 +166,7 @@ namespace Expense.Controllers
             }
 
         }
+
+        
     }
 }

@@ -21,7 +21,7 @@ namespace Expense.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Expense.Models.DBEntities.ExpenseMaintenance", b =>
+            modelBuilder.Entity("Expense.Models.DBEntities.ExpenseTypes", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()

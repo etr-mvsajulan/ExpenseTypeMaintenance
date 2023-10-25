@@ -5,10 +5,11 @@ namespace Expense.DAL
 {
     public interface IExpenseTypeService
     {
-        IEnumerable<ExpensetypeViewModel> GetExpensetypes(string search);
+        IEnumerable<ExpensetypeViewModel> GetExpensetypes(string search, int page, int currentPage, int itemsPerPage);
         ExpensetypeViewModel GetExpenseTypeById(int ID);
-        void CreateExpenseType(ExpensetypeViewModel expenseType);
+        void CreateExpenseType(CreateExpenseTypeModel expenseType);
         void DeleteExpenseType(int ID);
-        void UpdateExpenseType(ExpensetypeViewModel expensetype);
+        void UpdateExpenseType(UpdateExpenseTypeModel expensetype);
+        string GenerateCode();     
     }
 }
