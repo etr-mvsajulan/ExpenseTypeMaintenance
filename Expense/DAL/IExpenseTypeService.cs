@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Expense.Models;
+
 namespace Expense.DAL
 {
     public interface IExpenseTypeService

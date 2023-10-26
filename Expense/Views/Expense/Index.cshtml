@@ -1,0 +1,120 @@
+﻿@page
+@model Expense.Views.Expenses.IndexModel
+
+@{
+
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].TransactionNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].TransactionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].CostUnitCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].CostUnitName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].TaxableTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].VatTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].NetOfVatTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseViewModel[0].UpdatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.ExpenseViewModel != null && Model.ExpenseViewModel.Any())
+        {
+            @foreach (var item in Model.ExpenseViewModel)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CostUnitCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CostUnitName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaxableTotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VatTotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NetOfVatTotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdatedDate)
+                    </td>
+                    <td>
+                        <a asp-controller="Expense" asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-primary">Edit</a>
+                        <a asp-controller="Expense" asp-action="Details" asp-route-id="@item.ExpenseId" class="btn btn-primary">Details</a>
+                        <a asp-controller="Expense" asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6">
+                    <div>
+                        No Expense Type at this moment
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

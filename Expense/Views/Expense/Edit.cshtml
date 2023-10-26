@@ -1,0 +1,95 @@
+﻿@page
+@model Expense.Views.Expenses.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ExpenseViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ExpenseViewModel.ExpenseId" />
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.TransactionNumber" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.TransactionNumber" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.TransactionNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.TransactionDate" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.TransactionDate" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.TransactionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.CostUnitCode" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.CostUnitCode" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.CostUnitCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.CostUnitName" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.CostUnitName" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.CostUnitName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.Remarks" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.Remarks" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.TaxableTotal" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.TaxableTotal" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.TaxableTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.VatTotal" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.VatTotal" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.VatTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.NetOfVatTotal" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.NetOfVatTotal" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.NetOfVatTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.Status" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.Status" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.CreatedBy" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.CreatedBy" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.CreatedDate" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.CreatedDate" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.UpdatedBy" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.UpdatedBy" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseViewModel.UpdatedDate" class="control-label"></label>
+                <input asp-for="ExpenseViewModel.UpdatedDate" class="form-control" />
+                <span asp-validation-for="ExpenseViewModel.UpdatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

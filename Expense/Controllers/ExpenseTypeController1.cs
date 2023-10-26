@@ -1,6 +1,5 @@
 ﻿using Expense.DAL;
 using Expense.Models;
-using Expense.Models.DBEntities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
@@ -23,17 +22,6 @@ namespace Expense.Controllers
 
             var expenseTypeList = _expenseTypeService.GetExpensetypes(searchs, page, currentPage, itemsPerPage);
 
-            // Calculate the start and end pages based on the maxPages
-
-            //int skip = (page - 1) * itemsPerPage;
-            //var itemsOnPage = expenseTypeList.Skip(skip).Take(itemsPerPage).ToList();
-            //int totalPages = (int)Math.Ceiling((double)expenseTypeList.Count() / itemsPerPage);
-
-            //// Pass the items, search term, and pagination information to the view
-            //ViewBag.CurrentPage = page;
-            //ViewBag.TotalPages = totalPages;
-            //ViewBag.SearchTerm = searchs;
-            //ViewBag.ItemsPerPage = itemsPerPage;
             int skip = (page - 1) * itemsPerPage;
             var itemsOnPage = expenseTypeList.Skip(skip).Take(itemsPerPage).ToList();
             int totalPages = (int)Math.Ceiling((double)expenseTypeList.Count() / itemsPerPage);
@@ -161,6 +149,7 @@ namespace Expense.Controllers
                     _expenseTypeService.DeleteExpenseType(model.ExpenseTypeID);
                     TempData["successMessage"] = "Expense type deleted successfully";
                     return RedirectToAction("Index");
+                    
                 }
                 else
                 {

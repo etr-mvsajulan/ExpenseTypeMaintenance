@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Expense.DAL;
-using Expense.Models;
 using Expense.Models.DBEntities;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
 using PagedList.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using Expense.Models;
 
 namespace Expense.DAL
 {
@@ -100,6 +100,6 @@ namespace Expense.DAL
             throw new NotImplementedException();
         }
 
-       
+
     }
 }

@@ -5,7 +5,7 @@ namespace Expense.DAL
 { 
     public class ExpenseTypeDBContext : DbContext
     {
-        public ExpenseTypeDBContext(DbContextOptions options) : base(options)
+        public ExpenseTypeDBContext(DbContextOptions<ExpenseTypeDBContext> options) : base(options)
         {
         }
 
