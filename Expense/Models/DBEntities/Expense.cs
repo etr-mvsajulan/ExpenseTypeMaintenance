@@ -1,32 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Expense.Models.DBEntities
 {
-    public class Expenses
+    public class Expense
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ExpenseId { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(10)")]
         public string TransactionNumber { get; set; }
 
-        [Required]
         [Column(TypeName = "datetime")]
         public DateTime TransactionDate { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(20)")]
         public string CostUnitCode { get; set; }
 
-        [Required]
         [Column(TypeName = "varchar(100)")]
         public string CostUnitName { get; set; }
 
-        [Required]
-        [Column(TypeName = "varchar(100)")]
+        [Column(TypeName = "varchar(150)")]
         public string Remarks { get; set; }
 
         [Column(TypeName = "decimal(18,4)")]
@@ -52,19 +49,5 @@ namespace Expense.Models.DBEntities
 
         [Column(TypeName = "datetime")]
         public DateTime UpdatedDate { get; set; }
-
-        [NotMapped] // Not mapped to the database
-        public ExpenseStatus StatusEnum
-        {
-            get { return (ExpenseStatus)Status; }
-            set { Status = (int)value; }
-        }
-
-        public enum ExpenseStatus
-        {
-            Pending = 0,
-            Approved = 1,
-            Rejected = 2
-        }
     }
 }

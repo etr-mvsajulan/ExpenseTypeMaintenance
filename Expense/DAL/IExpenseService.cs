@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Expense.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Expense.DAL
 {
     public interface IExpenseService
     {
-        IEnumerable<ExpenseViewModel> GetExpenses(string search, int page, int currentPage, int itemsPerPage);
-        ExpenseViewModel GetExpenseById(int ID);
-        void CreateExpense(CreateExpenseModel expenseType);
-        void DeleteExpense(int ID);
-        void UpdateExpense(UpdateExpenseModel expensetype);
-        string GenerateCode();
+        //Task<List<string>> GetExpenseAsync();
+        //Task<string> GetExpenseAsync(int id);
+        //Task CreateExpenseAsync(string data);
+        //Task UpdateExpenseAsync(int id, string data);
+        //Task DeleteExpenseAsync(int id);    
+
     }
 }

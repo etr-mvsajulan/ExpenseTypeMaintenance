@@ -1,0 +1,95 @@
+﻿@model ExpenseViewModel
+
+@{
+    ViewData["Title"] = "Edit Expense";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ExpenseId" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="TransactionNumber" class="control-label"></label>
+                <input asp-for="TransactionNumber" class="form-control" readonly />
+                <span asp-validation-for="TransactionNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionDate" class="control-label"></label>
+                <input asp-for="TransactionDate" class="form-control" />
+                <span asp-validation-for="TransactionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostUnitCode" class="control-label"></label>
+                <input asp-for="CostUnitCode" class="form-control" />
+                <span asp-validation-for="CostUnitCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostUnitName" class="control-label"></label>
+                <input asp-for="CostUnitName" class="form-control" />
+                <span asp-validation-for="CostUnitName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxableTotal" class="control-label"></label>
+                <input asp-for="TaxableTotal" class="form-control" readonly />
+                <span asp-validation-for="TaxableTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VatTotal" class="control-label"></label>
+                <input asp-for="VatTotal" class="form-control" readonly />
+                <span asp-validation-for="VatTotal" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="NetOfVatTotal" class="control-label"></label>
+                <input asp-for="NetOfVatTotal" class="form-control" readonly />
+                <span asp-validation-for="NetOfVatTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" readonly />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" readonly />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" readonly />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedBy" class="control-label"></label>
+                <input asp-for="UpdatedBy" class="form-control" readonly />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" class="form-control" readonly />
+                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group" style="margin-top: 23px">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Close</a>
+            </div>
+        </div>
+    </div>
+         
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

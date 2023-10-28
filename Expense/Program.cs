@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ExpenseDBContext>(options => options.UseSqlServer(
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
+//builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 var app = builder.Build();
 

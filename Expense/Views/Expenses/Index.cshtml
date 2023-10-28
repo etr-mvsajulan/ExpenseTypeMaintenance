@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ExpenseViewModel>
+
+@{
+    ViewData["Title"] = "Expense List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostUnitCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostUnitName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaxableTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VatTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetOfVatTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionNumber)
+            </td>
+            <td>
+                @item.TransactionDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostUnitCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostUnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @item.TaxableTotal.ToString("N2")
+            </td>
+            <td>
+                @item.VatTotal.ToString("N2")
+            </td>
+            <td>
+                @item.NetOfVatTotal.ToString("N2")
+            </td>
+            <td>
+                @((Expense.Models.ExpenseViewModel.ExpenseStatus)item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @item.CreatedDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @item.UpdatedDate.ToShortDateString()
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                        <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-primary">Edit</a>
+                </div>
+                <div class="btn-group btn-group-sm">
+                        <a asp-action="Details" asp-route-id="@item.ExpenseId" class="btn btn-primary">Details</a>
+                </div>
+                <div class="btn-group btn-group-sm">
+                        <a asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger">Delete</a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

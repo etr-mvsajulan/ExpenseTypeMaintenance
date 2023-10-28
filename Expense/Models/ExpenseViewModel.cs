@@ -13,51 +13,44 @@ namespace Expense.Models
         [Key]
         public int ExpenseId { get; set; }
 
-        [DisplayName("TransactionNumber")]
+        [DisplayName("Transaction Number")]
         public string TransactionNumber { get; set; }
 
-        [DisplayName("TransactionDate")]
+        [DisplayName("Transaction Date")]
         public DateTime TransactionDate { get; set; }
 
-        [DisplayName("CostUnitCode")]
+        [DisplayName("CostUnit Code")]
         public string CostUnitCode { get; set; }
 
-        [DisplayName("CostUnitName")]
+        [DisplayName("CostUnit Name")]
         public string CostUnitName { get; set; }
 
         [DisplayName("Remarks")]
         public string Remarks { get; set; }
 
-        [DisplayName("TaxableTotal")]
+        [DisplayName("Taxable Total")]
         public decimal TaxableTotal { get; set; }
 
-        [DisplayName("VatTotal")]
+        [DisplayName("Vat Total")]
         public decimal VatTotal { get; set; }
 
-        [DisplayName("NetOfVatTotal")]
+        [DisplayName("NetOfVat Total")]
         public decimal NetOfVatTotal { get; set; }
 
         [DisplayName("Status")]
-        public int Status { get; set; }
+        public ExpenseStatus Status { get; set; }
 
-        [DisplayName("CreatedBy")]
+        [DisplayName("Created By")]
         public int CreatedBy { get; set; }
 
-        [DisplayName("CreatedDate")]
+        [DisplayName("Created Date")]
         public DateTime CreatedDate { get; set; }
 
-        [DisplayName("UpdatedBy")]
+        [DisplayName("Updated By")]
         public int UpdatedBy { get; set; }
 
-        [DisplayName("UpdatedDate")]
+        [DisplayName("Updated Date")]
         public DateTime UpdatedDate { get; set; }
-
-        [NotMapped] // Not mapped to the database
-        public ExpenseStatus StatusEnum
-        {
-            get { return (ExpenseStatus)Status; }
-            set { Status = (int)value; }
-        }
 
         public enum ExpenseStatus
         {
@@ -65,43 +58,24 @@ namespace Expense.Models
             Approved = 1,
             Rejected = 2
         }
+       
     }
 
-    [Keyless]
-    public class CreateExpenseModel
+    public class CreateExpenseViewModel
     {
         public string TransactionNumber { get; set; }
-
         public DateTime TransactionDate { get; set; }
-
         public string CostUnitCode { get; set; }
-
         public string CostUnitName { get; set; }
-
         public string Remarks { get; set; }
-
         public decimal TaxableTotal { get; set; }
-
         public decimal VatTotal { get; set; }
-
         public decimal NetOfVatTotal { get; set; }
-
-        public int Status { get; set; }
-
+        public ExpenseStatus Status { get; set; }
         public int CreatedBy { get; set; }
-
         public DateTime CreatedDate { get; set; }
-
         public int UpdatedBy { get; set; }
-
         public DateTime UpdatedDate { get; set; }
-
-        [NotMapped] // Not mapped to the database
-        public ExpenseStatus StatusEnum
-        {
-            get { return (ExpenseStatus)Status; }
-            set { Status = (int)value; }
-        }
 
         public enum ExpenseStatus
         {
@@ -111,44 +85,22 @@ namespace Expense.Models
         }
     }
 
-    
-    public class UpdateExpenseModel
+    public class UpdateExpenseViewModel
     {
-        [Key]
         public int ExpenseId { get; set; }
-
         public string TransactionNumber { get; set; }
-
         public DateTime TransactionDate { get; set; }
-
         public string CostUnitCode { get; set; }
-
         public string CostUnitName { get; set; }
-
         public string Remarks { get; set; }
-
         public decimal TaxableTotal { get; set; }
-
         public decimal VatTotal { get; set; }
-
         public decimal NetOfVatTotal { get; set; }
-
-        public int Status { get; set; }
-
+        public ExpenseStatus Status { get; set; }
         public int CreatedBy { get; set; }
-
         public DateTime CreatedDate { get; set; }
-
         public int UpdatedBy { get; set; }
-
         public DateTime UpdatedDate { get; set; }
-
-        [NotMapped] // Not mapped to the database
-        public ExpenseStatus StatusEnum
-        {
-            get { return (ExpenseStatus)Status; }
-            set { Status = (int)value; }
-        }
 
         public enum ExpenseStatus
         {
@@ -157,4 +109,5 @@ namespace Expense.Models
             Rejected = 2
         }
     }
+
 }
