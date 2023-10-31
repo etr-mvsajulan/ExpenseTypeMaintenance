@@ -92,3 +92,8 @@
     <a asp-action="Edit" asp-route-id="@Model?.ExpenseId" class="btn btn-primary">Edit</a>
     <a asp-action="Index" class="btn btn-danger">Close</a>
 </div>
+
+<div class="form-group" style="margin-top: 30px;">
+    @Html.Partial("_ExpenseDetailsPartial", Model.ExpenseDetails)
+
+</div>

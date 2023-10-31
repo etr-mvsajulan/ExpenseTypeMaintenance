@@ -16,6 +16,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IExpenseDetailsService, ExpenseDetailsService>();
+builder.Services.AddScoped<IVatComputationService, VatComputationService>();
+builder.Services.AddScoped<INetOfVatComputationService, NetOfVatComputationService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

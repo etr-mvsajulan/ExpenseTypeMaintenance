@@ -58,7 +58,8 @@ namespace Expense.DAL
                 CreatedBy = x.CreatedBy,
                 CreatedDate = x.CreatedDate,
                 UpdatedBy = x.UpdatedBy,
-                UpdatedDate = x.UpdatedDate
+                UpdatedDate = x.UpdatedDate,
+                ExpenseDetails = GetExpenseDetailsList(id)
             }).FirstOrDefault();
 
             return Expense;
@@ -140,6 +141,7 @@ namespace Expense.DAL
                 ExpenseDetailID = x.ExpenseDetailID,
                 Expenseid = x.Expenseid,
                 ExpenseTypeID = x.ExpenseTypeID,
+                //Description = GetETDesc(x.ExpenseTypeID),
                 Amount = x.Amount,
                 Remarks = x.Remarks,
                 NetOfVatAmount = x.NetOfVatAmount,
@@ -148,6 +150,14 @@ namespace Expense.DAL
             }).Where(x=> x.Expenseid == expenseid).ToList();
 
             return expenseDetails;
+        }
+
+        public string GetETDesc(int id)
+        {
+            
+            var desc = _context.ExpenseTypes.Where(x => x.ExpenseTypeID == id).FirstOrDefault();
+
+            return desc != null ? desc.Code + " - " + desc.Description : "Not Found!";
         }
     }
 }

@@ -12,7 +12,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ExpenseDetailID" />
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="Expenseid" class="control-label"></label>
                 <input asp-for="Expenseid" class="form-control" />
                 <span asp-validation-for="Expenseid" class="text-danger"></span>
@@ -35,17 +35,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="NetOfVatAmount" class="control-label"></label>
-                <input asp-for="NetOfVatAmount" class="form-control" />
+                <input asp-for="NetOfVatAmount" class="form-control" readonly/>
                 <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="VatAmount" class="control-label"></label>
-                <input asp-for="VatAmount" class="form-control" />
+                <input asp-for="VatAmount" class="form-control" readonly/>
                 <span asp-validation-for="VatAmount" class="text-danger"></span>
             </div>
             <div class="form-group" style="margin-top: 23px">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-danger">Close</a>
+                <a asp-action="Edit" asp-controller="Expenses" asp-route-id="@Model.Expenseid" control class="btn btn-danger">Close</a>
             </div>
         </form>
     </div>

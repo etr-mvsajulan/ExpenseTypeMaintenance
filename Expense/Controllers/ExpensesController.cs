@@ -27,6 +27,7 @@ namespace Expense.Controllers
 
             var expense = await Task.Run(() => _expenseService.GetExpenseList());
 
+
             return expense != null ? View(expense) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
         }
 
@@ -66,6 +67,7 @@ namespace Expense.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id));
+
             if (existingExpense != null) 
             { 
                 return View(existingExpense);

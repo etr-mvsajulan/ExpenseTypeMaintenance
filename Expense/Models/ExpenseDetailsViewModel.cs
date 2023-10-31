@@ -28,6 +28,9 @@ namespace Expense.Models
 
         [DisplayName("Vat Amount")]
         public decimal VatAmount { get; set; }
+
+        [DisplayName("Expense Description")]
+        public string Description { get; set; }
     }
 
     public class CreateExpenseDetailsViewModel
@@ -49,11 +52,5 @@ namespace Expense.Models
         public string Remarks { get; set; }
         public decimal NetOfVatAmount { get; set; }
         public decimal VatAmount { get; set; }
-    }
-
-    public class ETViewModel
-    {
-        public int ExpenseTypeID { get; set; }
-        public string Desc { get; set; }
     }
 }

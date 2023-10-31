@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Expense.Models.DBEntities;
+using System.Security.Cryptography;
 
 namespace Expense.DAL
 {
@@ -14,9 +15,14 @@ namespace Expense.DAL
     {
 
         private readonly ExpenseDBContext _context;
-        public ExpenseDetailsService(ExpenseDBContext context)
+        private readonly IVatComputationService _vatComputationService;
+        private readonly INetOfVatComputationService _NetOfVatComputationService;
+
+        public ExpenseDetailsService(ExpenseDBContext context, IVatComputationService vatComputationService, INetOfVatComputationService iNetOfVatComputationService)
         {
             this._context = context;
+            this._vatComputationService = vatComputationService;
+            this._NetOfVatComputationService = iNetOfVatComputationService;
         }
 
         public IEnumerable<ExpenseDetailsViewModel> GetExpenseDetails()
@@ -59,12 +65,14 @@ namespace Expense.DAL
                 ExpenseTypeID= details.ExpenseTypeID,
                 Amount= details.Amount,
                 Remarks= details.Remarks,
-                NetOfVatAmount = details.NetOfVatAmount,
-                VatAmount= details.VatAmount,
+                NetOfVatAmount = (decimal)_NetOfVatComputationService.ComputeNetOfVat(Convert.ToDouble(details.Amount)),
+                VatAmount= (decimal)_vatComputationService.ComputeVat(Convert.ToDouble(details.Amount)),
             };
 
             _context.ExpenseDetails.Add(newDetails);
             _context.SaveChanges();
+
+            UpdateHeader(details.Expenseid);
         }
 
         public void UpdateDetails(UpdateExpenseDetailsViewModel details)
@@ -75,9 +83,12 @@ namespace Expense.DAL
                 updateDetails.ExpenseTypeID = details.ExpenseTypeID;
                 updateDetails.Amount = details.Amount;
                 updateDetails.Remarks = details.Remarks;
-                updateDetails.NetOfVatAmount= details.NetOfVatAmount;
-                updateDetails.VatAmount = details.VatAmount;
+                updateDetails.NetOfVatAmount= (decimal)_NetOfVatComputationService.ComputeNetOfVat(Convert.ToDouble(details.Amount));
+                updateDetails.VatAmount = (decimal)_vatComputationService.ComputeVat(Convert.ToDouble(details.Amount));
+
                 _context.SaveChanges();
+
+                UpdateHeader(updateDetails.Expenseid);
             }
         }
 
@@ -88,6 +99,7 @@ namespace Expense.DAL
             {
                 _context.ExpenseDetails.Remove(deleteDetails);
                 _context.SaveChanges();
+                UpdateHeader(deleteDetails.Expenseid);
             }
         }
 
@@ -112,6 +124,31 @@ namespace Expense.DAL
 
             return "Expense Not Found";
             
+        }
+
+        public void UpdateHeader(int id)
+        {
+            var header = _context.Expense.Find(id);
+            decimal totalTaxableAmount = _context.ExpenseDetails
+                   .Where(ed => ed.Expenseid == id)
+                   .Sum(ed => ed.Amount);
+
+            decimal totalNetOfVatAmount = _context.ExpenseDetails
+                .Where(ed => ed.Expenseid == id)
+                .Sum(ed => ed.NetOfVatAmount);
+
+            // Calculate the sum of VatAmount in ExpenseDetails
+            decimal totalVatAmount = _context.ExpenseDetails
+                .Where(ed => ed.Expenseid == id)
+                .Sum(ed => ed.VatAmount);
+
+            if (header != null)
+            {
+                header.TaxableTotal = totalTaxableAmount;
+                header.NetOfVatTotal = totalNetOfVatAmount;
+                header.VatTotal = totalVatAmount;
+            }
+            _context.SaveChanges();
         }
 
 

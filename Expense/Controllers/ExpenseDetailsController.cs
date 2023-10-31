@@ -21,6 +21,7 @@ namespace Expense.Controllers
             _detailService = detailService;
         }
 
+
         // GET: ExpenseDetails
         public async Task<IActionResult> Index()
         {
@@ -54,7 +55,7 @@ namespace Expense.Controllers
             if (ModelState.IsValid)
             {
                 await Task.Run(() => _detailService.CreateDetails(details));
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Expenses", new { id = details.Expenseid }); ;
             }
             return View(details);
         }
@@ -82,7 +83,7 @@ namespace Expense.Controllers
                 try
                 {
                     await Task.Run(() => _detailService.UpdateDetails(details));
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Edit", "Expenses", new { id = details.Expenseid });
                 }
 
                 catch (Exception ex)
@@ -119,8 +120,9 @@ namespace Expense.Controllers
             {
                 if (details != null)
                 {
+                    int EID = await Task.Run(() => _detailService.GetDetailsByID(details.ExpenseDetailID).Expenseid);
                     await Task.Run(() => _detailService.DeleteDetails(details.ExpenseDetailID));
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Edit", "Expenses", new { id = EID });
                 }
                 else
                 {

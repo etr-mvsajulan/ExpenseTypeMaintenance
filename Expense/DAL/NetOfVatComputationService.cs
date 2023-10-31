@@ -11,7 +11,6 @@
 
         public double ComputeNetOfVat(double Amount)
         {
-
             double vatAmount = _vatServices.ComputeVat(Amount);
             double netAmount = Amount - vatAmount;
 

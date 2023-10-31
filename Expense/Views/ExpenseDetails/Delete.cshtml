@@ -49,6 +49,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ExpenseDetailID" />
         <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-danger">Close</a>
+        <a asp-action="Edit" asp-controller="Expenses" asp-route-id="@TempData["EID"]" class="btn btn-danger">Close</a>
     </form>
 </div>
