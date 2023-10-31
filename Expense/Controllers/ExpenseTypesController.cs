@@ -25,7 +25,7 @@ namespace Expense.Controllers
         [HttpGet]
         public JsonResult List()
         {
-            var sortedExpenseTypes = _expenseTypeService.GetExpensetypes("", 1,1,10);
+            var sortedExpenseTypes = _expenseTypeService.GetExpensetypes("");
             return new JsonResult(sortedExpenseTypes);
         }
     }

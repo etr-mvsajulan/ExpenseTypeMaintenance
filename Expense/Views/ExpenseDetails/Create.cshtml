@@ -1,0 +1,60 @@
+﻿@model CreateExpenseDetailsViewModel
+
+@{
+    ViewData["Title"] = "Add Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Expenseid" class="control-label"></label>
+                <input asp-for="Expenseid" class="form-control" />
+                <span asp-validation-for="Expenseid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseTypeID" class="control-label"></label>
+               @*  <input asp-for="ExpenseTypeID" class="form-control" /> *@
+                @* <select asp-for=ExpenseTypeID class="form-control" id="expenseTypeDropdown">
+                    <option value="">Select an Expense Type</option>
+                </select> *@
+                @Html.DropDownListFor(model => model.ExpenseTypeID, new SelectList(Enumerable.Empty<SelectListItem>(), "value", "text"), "Select Expense Type", new { @class = "form-control", id = "expenseTypeDropdown" })
+                <span asp-validation-for="ExpenseTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NetOfVatAmount" class="control-label"></label>
+                <input asp-for="NetOfVatAmount" class="form-control" />
+                <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VatAmount" class="control-label"></label>
+                <input asp-for="VatAmount" class="form-control" />
+                <span asp-validation-for="VatAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 23px;">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Close</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/loaddropdownet.js"></script>
+}

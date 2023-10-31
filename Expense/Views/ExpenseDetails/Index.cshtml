@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ExpenseDetailsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Expenseid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpenseTypeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetOfVatAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VatAmount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Expenseid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseTypeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetOfVatAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VatAmount)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <a asp-action="Edit" asp-route-id="@item.ExpenseDetailID" class="btn btn-primary">Edit</a>
+                </div>
+                <div class="btn-group btn-group-sm">
+                        <a asp-action="Details" asp-route-id="@item.ExpenseDetailID" class="btn btn-primary">Details</a>
+                </div>
+                <div class="btn-group btn-group-sm">
+                        <a asp-action="Delete" asp-route-id="@item.ExpenseDetailID" class="btn btn-danger">Delete</a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

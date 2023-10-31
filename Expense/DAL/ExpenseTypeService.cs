@@ -14,9 +14,9 @@ namespace Expense.DAL
 {
     public class ExpenseTypeService : IExpenseTypeService
     {
-        private readonly ExpenseTypeDBContext _context;
+        private readonly ExpenseDBContext _context;
 
-        public ExpenseTypeService(ExpenseTypeDBContext context)
+        public ExpenseTypeService(ExpenseDBContext context)
         {
             this._context = context;
         }
@@ -99,6 +99,7 @@ namespace Expense.DAL
         {
             throw new NotImplementedException();
         }
+
 
 
     }

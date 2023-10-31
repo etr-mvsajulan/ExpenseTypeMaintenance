@@ -52,6 +52,8 @@ namespace Expense.Models
         [DisplayName("Updated Date")]
         public DateTime UpdatedDate { get; set; }
 
+        public IEnumerable<ExpenseDetailsViewModel> ExpenseDetails { get; set; }
+
         public enum ExpenseStatus
         {
             Pending = 0,
@@ -88,7 +90,6 @@ namespace Expense.Models
     public class UpdateExpenseViewModel
     {
         public int ExpenseId { get; set; }
-        public string TransactionNumber { get; set; }
         public DateTime TransactionDate { get; set; }
         public string CostUnitCode { get; set; }
         public string CostUnitName { get; set; }

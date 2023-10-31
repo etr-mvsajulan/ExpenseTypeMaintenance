@@ -49,5 +49,7 @@ namespace Expense.Models.DBEntities
 
         [Column(TypeName = "datetime")]
         public DateTime UpdatedDate { get; set; }
+
+        public ICollection<ExpenseDetailsViewModel> ExpenseDetails { get; set; }
     }
 }

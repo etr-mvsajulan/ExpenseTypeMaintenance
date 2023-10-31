@@ -7,11 +7,12 @@ namespace Expense.DAL
 {
     public interface IExpenseService
     {
-        //Task<List<string>> GetExpenseAsync();
-        //Task<string> GetExpenseAsync(int id);
-        //Task CreateExpenseAsync(string data);
-        //Task UpdateExpenseAsync(int id, string data);
-        //Task DeleteExpenseAsync(int id);    
-
+        IEnumerable<ExpenseViewModel> GetExpenseList();
+        ExpenseViewModel GetExpenseByID(int id);
+        void CreateExpenseAsync(CreateExpenseViewModel expense);
+        void UpdateExpenseAsync(UpdateExpenseViewModel expense);
+        void DeleteExpenseAsync(int id);
+        string GenerateCode();
+        IEnumerable<ExpenseDetailsViewModel> GetExpenseDetailsList(int expenseid);
     }
 }

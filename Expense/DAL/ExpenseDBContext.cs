@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Expense.Models;
+using Expense.Models.DBEntities;
 
 namespace Expense.DAL
 {
@@ -9,5 +10,11 @@ namespace Expense.DAL
         public ExpenseDBContext(DbContextOptions<ExpenseDBContext> options) : base(options) { }
         public DbSet<Expense.Models.DBEntities.Expense> Expense { get; set; }
         public DbSet<Expense.Models.DBEntities.ExpenseDetails> ExpenseDetails { get; set; }
+        public DbSet<ExpenseTypes> ExpenseTypes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasSequence("MySequence");
+        }
     }
 }

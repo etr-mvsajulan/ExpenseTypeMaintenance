@@ -14,215 +14,145 @@ namespace Expense.Controllers
 {
     public class ExpensesController : Controller
     {
-        private readonly ExpenseDBContext _context;
+        private readonly IExpenseService _expenseService;
 
-        public ExpensesController(ExpenseDBContext context)
+        public ExpensesController(IExpenseService expenseService)
         {
-            _context = context;
+            this._expenseService = expenseService;
         }
 
         // GET: Expenses
         public async Task<IActionResult> Index(string search)
         {
 
-            var expense = _context.Expense.Where(x => string.IsNullOrEmpty(search) || x.TransactionNumber.Contains(search)).Select(x => new ExpenseViewModel
-            {
-                ExpenseId = x.ExpenseId,
-                TransactionNumber = x.TransactionNumber,
-                TransactionDate = x.TransactionDate,
-                CostUnitCode = x.CostUnitCode,
-                CostUnitName = x.CostUnitName,
-                Remarks = x.Remarks,
-                TaxableTotal = x.TaxableTotal,
-                VatTotal = x.VatTotal,
-                NetOfVatTotal = x.NetOfVatTotal,
-                Status = (ExpenseViewModel.ExpenseStatus)x.Status,
-                CreatedBy = x.CreatedBy,
-                CreatedDate = x.CreatedDate,
-                UpdatedBy = x.UpdatedBy,
-                UpdatedDate = x.UpdatedDate,
-            });
+            var expense = await Task.Run(() => _expenseService.GetExpenseList());
 
-            return expense != null ? View(await expense.ToListAsync()) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
-
-              //return _context.Expense != null ? 
-                          //View(await _context.Expense.ToListAsync()) :
-                          //Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
-            //return await _expenseService.GetExpensesAsync();
+            return expense != null ? View(expense) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
         }
 
         // GET: Expenses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task <IActionResult> Details(int id)
         {
-            if (id == null || _context.Expense == null)
+            var expenseDetails = await Task.Run(() => _expenseService.GetExpenseByID(id));
+            if (expenseDetails == null)
             {
                 return NotFound();
             }
 
-            var expense = await _context.Expense
-                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-            if (expense == null)
-            {
-                return NotFound();
-            }
-
-            return View(expense);
+            return View(expenseDetails);
         }
 
         // GET: Expenses/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ExpenseCode"] = GenerateCode(); 
+            ViewData["ExpenseCode"] = await Task.Run(()=> _expenseService.GenerateCode());
             return View();
         }
 
         // POST: Expenses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExpenseId,TransactionNumber,TransactionDate,CostUnitCode,CostUnitName,Remarks,TaxableTotal,VatTotal,NetOfVatTotal,Status,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] Expense.Models.DBEntities.Expense expense)
-        {
+        public async Task<IActionResult> Create(CreateExpenseViewModel expense)
+        {        
             if (ModelState.IsValid)
             {
-                _context.Add(expense);
-                await _context.SaveChangesAsync();
+                await Task.Run(() => _expenseService.CreateExpenseAsync(expense));
                 return RedirectToAction(nameof(Index));
             }
             return View(expense);
         }
 
         // GET: Expenses/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var expenseView = _context.Expense.Find(id);
-            if (id == null || expenseView == null)
-            {
-                return NotFound();
+            var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id));
+            if (existingExpense != null) 
+            { 
+                return View(existingExpense);
             }
-
-            var expenseViewModel = _context.Expense.Where(x=> x.ExpenseId == id).Select(x=> new ExpenseViewModel
+            else
             {
-                ExpenseId = x.ExpenseId,
-                TransactionNumber = x.TransactionNumber,
-                TransactionDate = x.TransactionDate,
-                CostUnitCode = x.CostUnitCode,
-                CostUnitName = x.CostUnitName,
-                Remarks = x.Remarks,
-                TaxableTotal = x.TaxableTotal,
-                VatTotal = x.VatTotal,
-                NetOfVatTotal = x.NetOfVatTotal,
-                Status = (ExpenseViewModel.ExpenseStatus)x.Status,
-                CreatedBy = x.CreatedBy,
-                CreatedDate = x.CreatedDate,
-                UpdatedBy = x.UpdatedBy,
-                UpdatedDate = x.UpdatedDate
-            }).FirstOrDefault();
-            if (expenseViewModel == null)
-            {
-                return NotFound();
+                RedirectToAction(nameof(Index));
             }
-            return View(expenseViewModel);
+            return View(existingExpense);
         }
 
         // POST: Expenses/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(UpdateExpenseViewModel expense)
+        public async Task<IActionResult> Edit(UpdateExpenseViewModel expense)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    var existingExpense = _context.Expense.Find(expense.ExpenseId);
-                    if (existingExpense != null)
-                    {
-                        existingExpense.TransactionDate = expense.TransactionDate;
-                        existingExpense.CostUnitCode = expense.CostUnitCode;
-                        existingExpense.CostUnitName = expense.CostUnitName;
-                        existingExpense.Remarks = expense.Remarks;
-                        _context.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
+                    await Task.Run(() => _expenseService.UpdateExpenseAsync(expense));
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ExpenseExists(expense.ExpenseId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-
-                    }
+                    return View();
                 }
-                
             }
-            return View();
+            catch (Exception ex)
+            {
+                return View(ex.Message);
+            }
         }
 
         // GET: Expenses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Expense == null)
+            try
             {
-                return NotFound();
+                var expenseDelete = await Task.Run(() => _expenseService.GetExpenseByID(id));
+                if (expenseDelete != null)
+                {
+                    return View(expenseDelete);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(ex.Message);
             }
 
-            var expense = await _context.Expense
-                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-            if (expense == null)
-            {
-                return NotFound();
-            }
-
-            return View(expense);
         }
 
         // POST: Expenses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(ExpenseViewModel expense)
         {
-            if (_context.Expense == null)
+            try
             {
-                return Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
+                if (expense != null)
+                {
+                    await Task.Run(() =>_expenseService.DeleteExpenseAsync(expense.ExpenseId));
+                    return RedirectToAction("Index");
+
+                }
+                else
+                {
+                    return View();
+                }
             }
-            var expense = await _context.Expense.FindAsync(id);
-            if (expense != null)
+            catch (Exception ex)
             {
-                _context.Expense.Remove(expense);
+                return View(ex.Message);
+
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
-        private bool ExpenseExists(int id)
+        public PartialViewResult LoadExpenseDetails(int expenseId)
         {
-          return (_context.Expense?.Any(e => e.ExpenseId == id)).GetValueOrDefault();
+            IEnumerable<ExpenseDetailsViewModel> expenseDetails = _expenseService.GetExpenseDetailsList(expenseId);
+            return PartialView("_ExpenseDetails", expenseDetails);
         }
 
-        public string GenerateCode()
-        {
-            SqlParameter result = new SqlParameter("@result", System.Data.SqlDbType.Int)
-            {
-                Direction = System.Data.ParameterDirection.Output
-            };
-
-            _context.Database.ExecuteSqlRaw(
-                       "SELECT @result = (NEXT VALUE FOR ExpenseTransactions)", result);
-
-            int values = (int)result.Value;
-            string NextSequence = values.ToString("D10");
-            return NextSequence;
-        }
-
-        public ExpensetypeViewModel GetExpenseTypeById(int? ID)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
