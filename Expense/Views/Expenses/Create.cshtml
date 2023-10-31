@@ -23,35 +23,30 @@
                 <input asp-for="TransactionDate" type="date" class="form-control" />
                 <span asp-validation-for="TransactionDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CostUnitCode" class="control-label"></label>
-                <input asp-for="CostUnitCode" class="form-control" />
-                <span asp-validation-for="CostUnitCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CostUnitName" class="control-label"></label>
-                <input asp-for="CostUnitName" class="form-control" />
-                <span asp-validation-for="CostUnitName" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="Remarks" class="control-label"></label>
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="TaxableTotal" class="control-label"></label>
                 <input asp-for="TaxableTotal" value="0" class="form-control" readonly/>
                 <span asp-validation-for="TaxableTotal" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="VatTotal" class="control-label"></label>
                 <input asp-for="VatTotal" value="0" class="form-control" readonly/>
                 <span asp-validation-for="VatTotal" class="text-danger"></span>
             </div>
+            <div class="form-group" style="margin-top: 23px;">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Close</a>
+            </div>
         </div>
 
         <div class="col-md-6">
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="NetOfVatTotal" class="control-label"></label>
                 <input asp-for="NetOfVatTotal" value="0" class="form-control" readonly/>
                 <span asp-validation-for="NetOfVatTotal" class="text-danger"></span>
@@ -62,29 +57,36 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CostUnitCode" class="control-label"></label>
+                <input asp-for="CostUnitCode" class="form-control" />
+                <span asp-validation-for="CostUnitCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostUnitName" class="control-label"></label>
+                <input asp-for="CostUnitName" class="form-control" />
+                <span asp-validation-for="CostUnitName" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
                 <label asp-for="CreatedBy" class="control-label"></label>
                 <input asp-for="CreatedBy" value = "1" class="form-control" readonly/>
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CreatedDate" class="control-label"></label>
                 <input asp-for="CreatedDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" class="form-control"  readonly/>
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UpdatedBy" class="control-label"></label>
                 <input asp-for="UpdatedBy" value ="1" class="form-control" readonly/>
                 <span asp-validation-for="UpdatedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UpdatedDate" class="control-label"></label>
                 <input asp-for="UpdatedDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" class="form-control" readonly />
                 <span asp-validation-for="UpdatedDate" class="text-danger"></span>
             </div>
-            <div class="form-group" style="margin-top: 23px;">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-danger">Close</a>
-            </div>
+            
         </div>
     </div>
     

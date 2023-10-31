@@ -6,6 +6,7 @@ using Expense.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Expense.DAL
 {
@@ -141,7 +142,6 @@ namespace Expense.DAL
                 ExpenseDetailID = x.ExpenseDetailID,
                 Expenseid = x.Expenseid,
                 ExpenseTypeID = x.ExpenseTypeID,
-                //Description = GetETDesc(x.ExpenseTypeID),
                 Amount = x.Amount,
                 Remarks = x.Remarks,
                 NetOfVatAmount = x.NetOfVatAmount,
@@ -152,12 +152,6 @@ namespace Expense.DAL
             return expenseDetails;
         }
 
-        public string GetETDesc(int id)
-        {
-            
-            var desc = _context.ExpenseTypes.Where(x => x.ExpenseTypeID == id).FirstOrDefault();
-
-            return desc != null ? desc.Code + " - " + desc.Description : "Not Found!";
-        }
+       
     }
 }

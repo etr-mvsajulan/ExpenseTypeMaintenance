@@ -28,7 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Remarks)
             </th>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.TaxableTotal)
             </th>
             <th>
@@ -36,11 +36,11 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NetOfVatTotal)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>
             <th>
@@ -51,7 +51,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -73,7 +73,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Remarks)
             </td>
-            <td>
+@*             <td>
                 @item.TaxableTotal.ToString("N2")
             </td>
             <td>
@@ -81,11 +81,11 @@
             </td>
             <td>
                 @item.NetOfVatTotal.ToString("N2")
-            </td>
+            </td> *@
             <td>
                 @((Expense.Models.ExpenseViewModel.ExpenseStatus)item.Status)
             </td>
-            <td>
+@*             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
             <td>
@@ -96,7 +96,7 @@
             </td>
             <td>
                 @item.UpdatedDate.ToShortDateString()
-            </td>
+            </td> *@
             <td>
                 <div class="btn-group btn-group-sm">
                         <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-primary">Edit</a>

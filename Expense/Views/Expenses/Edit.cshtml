@@ -23,6 +23,35 @@
                 <input asp-for="TransactionDate" type="date" class="form-control" />
                 <span asp-validation-for="TransactionDate" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="TaxableTotal" class="control-label"></label>
+                <input asp-for="TaxableTotal" class="form-control" readonly />
+                <span asp-validation-for="TaxableTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="VatTotal" class="control-label"></label>
+                <input asp-for="VatTotal" class="form-control" readonly />
+                <span asp-validation-for="VatTotal" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group" hidden>
+                <label asp-for="NetOfVatTotal" class="control-label"></label>
+                <input asp-for="NetOfVatTotal" class="form-control" readonly />
+                <span asp-validation-for="NetOfVatTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" readonly />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="CostUnitCode" class="control-label"></label>
                 <input asp-for="CostUnitCode" class="form-control" />
@@ -33,50 +62,22 @@
                 <input asp-for="CostUnitName" class="form-control" />
                 <span asp-validation-for="CostUnitName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Remarks" class="control-label"></label>
-                <input asp-for="Remarks" class="form-control" />
-                <span asp-validation-for="Remarks" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TaxableTotal" class="control-label"></label>
-                <input asp-for="TaxableTotal" class="form-control" readonly />
-                <span asp-validation-for="TaxableTotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VatTotal" class="control-label"></label>
-                <input asp-for="VatTotal" class="form-control" readonly />
-                <span asp-validation-for="VatTotal" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="NetOfVatTotal" class="control-label"></label>
-                <input asp-for="NetOfVatTotal" class="form-control" readonly />
-                <span asp-validation-for="NetOfVatTotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" readonly />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CreatedBy" class="control-label"></label>
                 <input asp-for="CreatedBy" class="form-control" readonly />
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CreatedDate" class="control-label"></label>
                 <input asp-for="CreatedDate" class="form-control" readonly />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UpdatedBy" class="control-label"></label>
                 <input asp-for="UpdatedBy" class="form-control" readonly />
                 <span asp-validation-for="UpdatedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UpdatedDate" class="control-label"></label>
                 <input asp-for="UpdatedDate" class="form-control" readonly />
                 <span asp-validation-for="UpdatedDate" class="text-danger"></span>

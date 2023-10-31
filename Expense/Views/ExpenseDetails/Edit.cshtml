@@ -33,12 +33,12 @@
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="NetOfVatAmount" class="control-label"></label>
                 <input asp-for="NetOfVatAmount" class="form-control" readonly/>
                 <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="VatAmount" class="control-label"></label>
                 <input asp-for="VatAmount" class="form-control" readonly/>
                 <span asp-validation-for="VatAmount" class="text-danger"></span>
