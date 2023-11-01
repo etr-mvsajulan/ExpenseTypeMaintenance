@@ -93,40 +93,6 @@ else if (!string.IsNullOrWhiteSpace(@errorMessage))
             }
         </tbody>
     </table>
-   @*  <div class="container">
-        @if (ViewBag.Pager.TotalPages > 1)
-        {
-            <ul class="pagination justify-content-end">
-                @if (ViewBag.Pager.CurrentPage > 1)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="1">First</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
-                    </li>
-                }
-
-                @for (var pge = ViewBag.Pager.StartPage; pge <= ViewBag.Pager.EndPage; pge++)
-                {
-                    <li class="page-item @(pge == ViewBag.Pager.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@pge">@pge</a>
-                    </li>
-                }
-
-                @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@(ViewBag.Pager.CurrentPage + 1)">Next</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="ExpenseTypeController1" asp-action="Index" asp-route-page="@ViewBag.Pager.TotalPages">Last</a>
-                    </li>
-                }
-            </ul>
-        }
-        
-    </div> *@
     <div class="pagination-container">
         <a class="pagination-button @(ViewBag.CurrentPage == 1 ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Previous</a>
 

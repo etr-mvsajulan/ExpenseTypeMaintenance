@@ -2,11 +2,16 @@
 
 @{
     ViewData["Title"] = "Index";
+    var row = Model.FirstOrDefault();
+
 }
 
-<div class="form-group" style="margin-bottom: 23px">
-    <a asp-action="Create" asp-controller="ExpenseDetails" asp-route-id="" class="btn btn-primary">Add Details</a>
-</div>
+@if (row != null && !row.isShow)
+{
+    <div class="form-group" style="margin-bottom: 23px">
+        <a asp-action="Create" asp-controller="ExpenseDetails" asp-route-id="" class="btn btn-primary">Add Details</a>
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
@@ -19,12 +24,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Remarks)
             </th>
+            
+            @if (row!= null && row.isShow)
+            {
             <th>
                 @Html.DisplayNameFor(model => model.NetOfVatAmount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.VatAmount)
             </th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -33,7 +42,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ExpenseTypeID)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
@@ -41,20 +50,26 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Remarks)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NetOfVatAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VatAmount)
-                </td>
-                <td>
-                    <div class="btn-group btn-group-sm">
-                        <a asp-action="Edit" asp-controller = "ExpenseDetails" asp-route-id="@item.ExpenseDetailID" class="btn btn-primary">Edit</a>
-                    </div>
-                    <div class="btn-group btn-group-sm">
-                        <a asp-action="Delete" asp-controller="ExpenseDetails" asp-route-id="@item.ExpenseDetailID" class="btn btn-danger">Delete</a>
-                    </div>
-                </td>
+                @if (item.isShow)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NetOfVatAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VatAmount)
+                    </td>
+                }
+                @if (!item.isShow)
+                {
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Edit" asp-controller="ExpenseDetails" asp-route-id="@item.ExpenseDetailID" class="btn btn-primary">Edit</a>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Delete" asp-controller="ExpenseDetails" asp-route-id="@item.ExpenseDetailID" class="btn btn-danger">Delete</a>
+                        </div>
+                    </td>
+                }
             </tr>
         }
     </tbody>

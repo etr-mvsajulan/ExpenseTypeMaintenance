@@ -8,8 +8,9 @@
         $.each(data, function (key, entry) {
             dropdown.append($('<option></option>').attr('value', entry.Code).text(entry.Description));
         });
+        // Set the selected option based on the model's ExpenseTypeID
+        dropdown.find('option[value="' + expenseTypeID + '"]').prop('selected', true);
     });
-
 });
 
 $('#expenseTypeDropdown').change(function () {

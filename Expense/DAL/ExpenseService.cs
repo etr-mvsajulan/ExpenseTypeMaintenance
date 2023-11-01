@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Expense.Models.DBEntities;
 
 namespace Expense.DAL
 {
@@ -19,9 +20,9 @@ namespace Expense.DAL
             this._context = context;
         }
 
-        public IEnumerable<ExpenseViewModel> GetExpenseList()
+        public IEnumerable<ExpenseViewModel> GetExpenseList(string search, int page = 1, int currentPage = 1, int itemsPerPage = 5)
         {
-            var expenseList = _context.Expense.Select(x => new ExpenseViewModel
+            var expenseList = _context.Expense.Where(x=> string.IsNullOrEmpty(search) || x.TransactionNumber.Contains(search)).Select(x => new ExpenseViewModel
             {
                 ExpenseId = x.ExpenseId,
                 TransactionNumber = x.TransactionNumber,
@@ -42,7 +43,7 @@ namespace Expense.DAL
             return expenseList;
         }
 
-        public ExpenseViewModel GetExpenseByID(int id)
+        public ExpenseViewModel GetExpenseByID(int id, bool isShow)
         {
             var Expense = _context.Expense.Where(x=> x.ExpenseId == id).Select(x=> new ExpenseViewModel
             {
@@ -60,7 +61,7 @@ namespace Expense.DAL
                 CreatedDate = x.CreatedDate,
                 UpdatedBy = x.UpdatedBy,
                 UpdatedDate = x.UpdatedDate,
-                ExpenseDetails = GetExpenseDetailsList(id)
+                ExpenseDetails = GetExpenseDetailsList(id, isShow)
             }).FirstOrDefault();
 
             return Expense;
@@ -102,10 +103,8 @@ namespace Expense.DAL
                 updateExpense.VatTotal = expense.VatTotal;
                 updateExpense.NetOfVatTotal = expense.NetOfVatTotal;
                 updateExpense.Status = (int)(UpdateExpenseViewModel.ExpenseStatus)expense.Status;
-                updateExpense.CreatedBy = expense.CreatedBy;
-                updateExpense.CreatedDate = expense.CreatedDate;
                 updateExpense.UpdatedBy = expense.UpdatedBy;
-                updateExpense.UpdatedDate = expense.UpdatedDate;
+                updateExpense.UpdatedDate = DateTime.Now;
                 _context.SaveChanges();
             }
         }
@@ -113,9 +112,11 @@ namespace Expense.DAL
         public void DeleteExpenseAsync(int id)
         {
             var deleteExpense = _context.Expense.Find(id);
+            var deleteDetails = _context.ExpenseDetails.Where(x => x.Expenseid == id);
             if (deleteExpense != null)
             {
                 _context.Expense.Remove(deleteExpense);
+                _context.ExpenseDetails.RemoveRange(deleteDetails);
                 _context.SaveChanges();
             }
         }
@@ -135,17 +136,19 @@ namespace Expense.DAL
             return NextSequence;
         }
 
-        public IEnumerable<ExpenseDetailsViewModel> GetExpenseDetailsList(int expenseid)
+        public IEnumerable<ExpenseDetailsViewModel> GetExpenseDetailsList(int expenseid, bool isShow)
         {
             var expenseDetails = _context.ExpenseDetails.Select(x => new ExpenseDetailsViewModel
             {
                 ExpenseDetailID = x.ExpenseDetailID,
                 Expenseid = x.Expenseid,
                 ExpenseTypeID = x.ExpenseTypeID,
+                Description = _context.ExpenseTypes.Where(y=> y.ExpenseTypeID == x.ExpenseTypeID).Select(y=> y.Code + " - " + y.Description).FirstOrDefault(),
                 Amount = x.Amount,
                 Remarks = x.Remarks,
                 NetOfVatAmount = x.NetOfVatAmount,
-                VatAmount = x.VatAmount
+                VatAmount = x.VatAmount,
+                isShow = isShow
 
             }).Where(x=> x.Expenseid == expenseid).ToList();
 

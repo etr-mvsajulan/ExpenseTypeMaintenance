@@ -7,6 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -20,7 +21,10 @@
             <div class="form-group">
                 <label asp-for="ExpenseTypeID" class="control-label"></label>
                 @* <input asp-for="ExpenseTypeID" class="form-control" /> *@
-                @Html.DropDownListFor(model => model.ExpenseTypeID, new SelectList(Enumerable.Empty<SelectListItem>(), "value", "text"), "Select Expense Type", new { @class = "form-control", id = "expenseTypeDropdown" })
+                @Html.DropDownListFor(model => model.ExpenseTypeID, 
+                    new SelectList(Enumerable.Empty<SelectListItem>(), "value", "text"), 
+                    "Select Expense Type", 
+                    new { @class = "form-control", id = "expenseTypeDropdown" })
                 <span asp-validation-for="ExpenseTypeID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,7 +40,7 @@
             <div class="form-group" hidden>
                 <label asp-for="NetOfVatAmount" class="control-label"></label>
                 <input asp-for="NetOfVatAmount" class="form-control" readonly/>
-                <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>
+                <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>   
             </div>
             <div class="form-group" hidden>
                 <label asp-for="VatAmount" class="control-label"></label>
@@ -54,5 +58,28 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="~/js/loaddropdownet.js"></script>
+    <script>
+        var expenseTypeID = @Html.Raw(Json.Serialize(Model.ExpenseTypeID));
+
+        $(document).ready(function () {
+            // Make an AJAX request to get the list of ExpenseTypes
+            $.get("/ExpenseDetails/LoadExpensetypes", function (data) {
+                // Iterate through the data and populate the dropdown
+                var dropdown = $("#expenseTypeDropdown");
+                dropdown.empty(); // Clear existing options
+
+                $.each(data, function (key, entry) {
+                    dropdown.append($('<option></option>').attr('value', entry.Code).text(entry.Description));
+                });
+                // Set the selected option based on the model's ExpenseTypeID
+                dropdown.val(expenseTypeID);
+            });
+        });
+
+        $('#expenseTypeDropdown').change(function () {
+            var selectedValue = $(this).val();
+            // Set the selected value to the hidden input (ExpenseTypeID)
+            $('#ExpenseTypeID').val(selectedValue);
+        });
+    </script>
 }

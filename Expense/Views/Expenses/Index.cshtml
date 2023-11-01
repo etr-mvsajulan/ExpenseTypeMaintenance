@@ -1,114 +1,146 @@
-﻿@model IEnumerable<ExpenseViewModel>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Expense.Models.DBEntities;
+@model IEnumerable<ExpenseViewModel>
 
 @{
     ViewData["Title"] = "Expense List";
+
+
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="form-group" style="margin-bottom: 23px">
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</div>
-    
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CostUnitCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CostUnitName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-@*             <th>
+<link href="~/css/paginationdesign.css" rel="stylesheet" />
+
+<form>
+    <div class="form-group" style="margin-bottom: 23px">
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+        @using (Html.BeginForm("Index", "Expenses", FormMethod.Get))
+        {
+            <div class="float-sm-end">
+                @Html.TextBox("searchExpense")
+
+                <input type="submit" value="Search" placeholder="Search description" />
+            </div>
+
+        }
+    </div>
+    <table class="table table-responsive table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CostUnitCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CostUnitName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                @*             <th>
                 @Html.DisplayNameFor(model => model.TaxableTotal)
-            </th>
-            <th>
+                </th>
+                <th>
                 @Html.DisplayNameFor(model => model.VatTotal)
-            </th>
-            <th>
+                </th>
+                <th>
                 @Html.DisplayNameFor(model => model.NetOfVatTotal)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-@*             <th>
+                </th> *@
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                @*             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
+                </th>
+                <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
+                </th>
+                <th>
                 @Html.DisplayNameFor(model => model.UpdatedBy)
-            </th>
-            <th>
+                </th>
+                <th>
                 @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th> *@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionNumber)
-            </td>
-            <td>
-                @item.TransactionDate.ToShortDateString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CostUnitCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CostUnitName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks)
-            </td>
-@*             <td>
+                </th> *@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionNumber)
+                    </td>
+                    <td>
+                        @item.TransactionDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CostUnitCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CostUnitName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    @*             <td>
                 @item.TaxableTotal.ToString("N2")
-            </td>
-            <td>
+                </td>
+                <td>
                 @item.VatTotal.ToString("N2")
-            </td>
-            <td>
+                </td>
+                <td>
                 @item.NetOfVatTotal.ToString("N2")
-            </td> *@
-            <td>
-                @((Expense.Models.ExpenseViewModel.ExpenseStatus)item.Status)
-            </td>
-@*             <td>
+                </td> *@
+                    <td>
+                        @((ExpenseViewModel.ExpenseStatus)item.Status)
+                    </td>
+                    @*             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
+                </td>
+                <td>
                 @item.CreatedDate.ToShortDateString()
-            </td>
-            <td>
+                </td>
+                <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
+                </td>
+                <td>
                 @item.UpdatedDate.ToShortDateString()
-            </td> *@
-            <td>
-                <div class="btn-group btn-group-sm">
-                        <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-primary">Edit</a>
-                </div>
-                <div class="btn-group btn-group-sm">
-                        <a asp-action="Details" asp-route-id="@item.ExpenseId" class="btn btn-primary">Details</a>
-                </div>
-                <div class="btn-group btn-group-sm">
-                        <a asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger">Delete</a>
-                </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </td> *@
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Edit" asp-route-id="@item.ExpenseId" class="btn btn-primary @(item.Status!=@ExpenseViewModel.ExpenseStatus.Pending? "disabled" : "")">Edit</a>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Details" asp-route-id="@item.ExpenseId" class="btn btn-primary">Details</a>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Delete" asp-route-id="@item.ExpenseId" class="btn btn-danger @(item.Status!=@ExpenseViewModel.ExpenseStatus.Pending? "disabled" : "")">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pagination-container">
+        <a class="pagination-button @(ViewBag.CurrentPage == 1 ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Previous</a>
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.FirstPage ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.FirstPage, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">First</a>
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <a class="pagination-button @(i == ViewBag.CurrentPage ? "active" : "")" href="@Url.Action("Index", new { page = i, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">@i</a>
+        }
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.LastPage ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.LastPage, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Last</a>
+
+        <a class="pagination-button @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, search = ViewBag.SearchTerm, itemsPerPage = ViewBag.ItemsPerPage })">Next</a>
+    </div>
+</form>

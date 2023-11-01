@@ -98,8 +98,6 @@ namespace Expense.Models
         public decimal VatTotal { get; set; }
         public decimal NetOfVatTotal { get; set; }
         public ExpenseStatus Status { get; set; }
-        public int CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
         public int UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
 

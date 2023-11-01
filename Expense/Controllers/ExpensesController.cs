@@ -9,6 +9,7 @@ using Expense.DAL;
 using Expense.Models.DBEntities;
 using Expense.Models;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
 
 namespace Expense.Controllers
 {
@@ -22,24 +23,36 @@ namespace Expense.Controllers
         }
 
         // GET: Expenses
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string searchExpense, int page = 1, int currentPage = 1, int itemsPerPage = 5)
         {
 
-            var expense = await Task.Run(() => _expenseService.GetExpenseList());
+            var expense = await Task.Run(() => _expenseService.GetExpenseList(searchExpense));
+            int skip = (page - 1) * itemsPerPage;
+            var itemsOnPage = expense.Skip(skip).Take(itemsPerPage).ToList();
+            int totalPages = (int)Math.Ceiling((double)expense.Count() / itemsPerPage);
 
+            // Pass the items, search term, and pagination information to the view
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchTerm = searchExpense;
+            ViewBag.ItemsPerPage = itemsPerPage;
 
-            return expense != null ? View(expense) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
+            // Calculate "First" and "Last" pages
+            ViewBag.FirstPage = 1;
+            ViewBag.LastPage = totalPages;
+
+            return itemsOnPage != null ? View(itemsOnPage) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
         }
 
         // GET: Expenses/Details/5
         public async Task <IActionResult> Details(int id)
         {
-            var expenseDetails = await Task.Run(() => _expenseService.GetExpenseByID(id));
+            var expenseDetails = await Task.Run(() => _expenseService.GetExpenseByID(id, true));
             if (expenseDetails == null)
             {
                 return NotFound();
             }
-
+            TempData["showColumn"] = true;
             return View(expenseDetails);
         }
 
@@ -58,7 +71,6 @@ namespace Expense.Controllers
             if (ModelState.IsValid)
             {
                 await Task.Run(() => _expenseService.CreateExpenseAsync(expense));
-                return RedirectToAction(nameof(Index));
             }
             return View(expense);
         }
@@ -66,7 +78,7 @@ namespace Expense.Controllers
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id));
+            var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id, false));
 
             if (existingExpense != null) 
             { 
@@ -90,7 +102,7 @@ namespace Expense.Controllers
                 if (ModelState.IsValid)
                 {
                     await Task.Run(() => _expenseService.UpdateExpenseAsync(expense));
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Edit", "Expenses", new { id = expense.ExpenseId });
                 }
                 else
                 {

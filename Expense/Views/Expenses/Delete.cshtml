@@ -93,4 +93,9 @@
         <input type="submit" value="Delete" class="btn btn-danger" /> 
         <a asp-action="Index" class="btn btn-danger">Close</a>
     </form>
+
+    <div class="form-group" style="margin-top: 30px;">
+        @Html.Partial("_ExpenseDetailsPartial", Model.ExpenseDetails)
+
+    </div>
 </div>
