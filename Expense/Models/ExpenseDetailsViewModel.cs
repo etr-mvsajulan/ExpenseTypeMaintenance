@@ -31,8 +31,6 @@ namespace Expense.Models
 
         [DisplayName("Expense Description")]
         public string Description { get; set; }
-
-        public bool isShow {  get; set; }
     }
 
     public class CreateExpenseDetailsViewModel

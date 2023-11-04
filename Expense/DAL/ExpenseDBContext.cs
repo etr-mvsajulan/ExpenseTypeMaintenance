@@ -11,7 +11,7 @@ namespace Expense.DAL
         public DbSet<Expense.Models.DBEntities.Expense> Expense { get; set; }
         public DbSet<Expense.Models.DBEntities.ExpenseDetails> ExpenseDetails { get; set; }
         public DbSet<ExpenseTypes> ExpenseTypes { get; set; }
-
+        public DbSet<UserRegistration> UserRegistration { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasSequence("MySequence");

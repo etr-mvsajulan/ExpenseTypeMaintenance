@@ -47,7 +47,7 @@ namespace Expense.Controllers
         // GET: Expenses/Details/5
         public async Task <IActionResult> Details(int id)
         {
-            var expenseDetails = await Task.Run(() => _expenseService.GetExpenseByID(id, true));
+            var expenseDetails = await Task.Run(() => _expenseService.GetExpenseByID(id));
             if (expenseDetails == null)
             {
                 return NotFound();
@@ -59,7 +59,6 @@ namespace Expense.Controllers
         // GET: Expenses/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["ExpenseCode"] = await Task.Run(()=> _expenseService.GenerateCode());
             return View();
         }
 
@@ -67,10 +66,12 @@ namespace Expense.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateExpenseViewModel expense)
-        {        
+        {
+            int ExpenseID = -1;
             if (ModelState.IsValid)
             {
-                await Task.Run(() => _expenseService.CreateExpenseAsync(expense));
+                ExpenseID = await _expenseService.CreateExpenseAsync(expense);
+                return RedirectToAction("Edit", "Expenses", new { id = ExpenseID });
             }
             return View(expense);
         }
@@ -78,10 +79,10 @@ namespace Expense.Controllers
         // GET: Expenses/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id, false));
+            var existingExpense = await Task.Run(() => _expenseService.GetExpenseByID(id));
 
             if (existingExpense != null) 
-            { 
+            {
                 return View(existingExpense);
             }
             else
@@ -101,7 +102,7 @@ namespace Expense.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await Task.Run(() => _expenseService.UpdateExpenseAsync(expense));
+                    await Task.Run(() => _expenseService.UpdateExpenseAsync(expense));                   
                     return RedirectToAction("Edit", "Expenses", new { id = expense.ExpenseId });
                 }
                 else
@@ -162,9 +163,9 @@ namespace Expense.Controllers
             }
         }
 
-        public PartialViewResult LoadExpenseDetails(int expenseId)
+        public async Task<PartialViewResult> LoadExpenseDetails(int expenseId)
         {
-            IEnumerable<ExpenseDetailsViewModel> expenseDetails = _expenseService.GetExpenseDetailsList(expenseId);
+            IEnumerable<ExpenseDetailsViewModel> expenseDetails = await _expenseService.GetExpenseDetailsList(expenseId);
             return PartialView("_ExpenseDetails", expenseDetails);
         }
 

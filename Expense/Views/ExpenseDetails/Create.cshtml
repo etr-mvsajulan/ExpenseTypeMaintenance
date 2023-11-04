@@ -19,10 +19,10 @@
             <div class="form-group">
                 <label asp-for="ExpenseTypeID" class="control-label"></label>
                @*  <input asp-for="ExpenseTypeID" class="form-control" /> *@
-                @* <select asp-for=ExpenseTypeID class="form-control" id="expenseTypeDropdown">
-                    <option value="">Select an Expense Type</option>
-                </select> *@
-                @Html.DropDownListFor(model => model.ExpenseTypeID, new SelectList(Enumerable.Empty<SelectListItem>(), "value", "text"), "Select Expense Type", new { @class = "form-control", id = "expenseTypeDropdown" })
+                <select asp-for="ExpenseTypeID" id="expenseTypeDropdown" class="form-control form-select">
+                    <option value="" disabled selected>Select Expense Type</option>
+                </select>
+                @* @Html.DropDownListFor(model => model.ExpenseTypeID, new SelectList(Enumerable.Empty<SelectListItem>(), "value", "text"), "Select Expense Type", new { @class = "form-control", id = "expenseTypeDropdown" }) *@
                 <span asp-validation-for="ExpenseTypeID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,16 +34,6 @@
                 <label asp-for="Remarks" class="control-label"></label>
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="NetOfVatAmount" class="control-label"></label>
-                <input asp-for="NetOfVatAmount" value="0" class="form-control" readonly/>
-                <span asp-validation-for="NetOfVatAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="VatAmount" class="control-label"></label>
-                <input asp-for="VatAmount" value="0" class="form-control" readonly/>
-                <span asp-validation-for="VatAmount" class="text-danger"></span>
             </div>
             <div class="form-group" style="margin-top: 23px;">
                 <input type="submit" value="Create" class="btn btn-primary" />

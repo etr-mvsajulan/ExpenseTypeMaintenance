@@ -25,14 +25,14 @@ namespace Expense.Controllers
         // GET: ExpenseDetails
         public async Task<IActionResult> Index()
         {
-            var expenseDetails = await Task.Run(() => _detailService.GetExpenseDetails());
+            var expenseDetails = await _detailService.GetExpenseDetails();
             return View(expenseDetails);
         }
 
         // GET: ExpenseDetails/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var details = await Task.Run(() => _detailService.GetDetailsByID(id));
+            var details = await _detailService.GetDetailsByID(id);
             if (details == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace Expense.Controllers
         {
             if (ModelState.IsValid)
             {
-                await Task.Run(() => _detailService.CreateDetails(details));
+                await _detailService.CreateDetails(details);
                 return RedirectToAction("Edit", "Expenses", new { id = details.Expenseid }); ;
             }
             return View(details);
@@ -63,7 +63,7 @@ namespace Expense.Controllers
         // GET: ExpenseDetails/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var details = await Task.Run(() => _detailService.GetDetailsByID(id));
+            var details = await _detailService.GetDetailsByID(id);
             if (details == null)
             {
                 return NotFound();
@@ -82,7 +82,7 @@ namespace Expense.Controllers
             {
                 try
                 {
-                    await Task.Run(() => _detailService.UpdateDetails(details));
+                    await _detailService.UpdateDetails(details);
                     return RedirectToAction("Edit", "Expenses", new { id = details.Expenseid });
                 }
 
@@ -102,7 +102,7 @@ namespace Expense.Controllers
         {
             try
             {
-                var detailsList = await Task.Run(() => _detailService.GetDetailsByID(id));
+                var detailsList = await _detailService.GetDetailsByID(id);
                 return detailsList != null ? View(detailsList) : NotFound();
             }
             catch (Exception ex)
@@ -120,9 +120,18 @@ namespace Expense.Controllers
             {
                 if (details != null)
                 {
-                    int EID = await Task.Run(() => _detailService.GetDetailsByID(details.ExpenseDetailID).Expenseid);
-                    await Task.Run(() => _detailService.DeleteDetails(details.ExpenseDetailID));
-                    return RedirectToAction("Edit", "Expenses", new { id = EID });
+                    var detailsResult = await _detailService.GetDetailsByID(details.ExpenseDetailID);
+                    if (detailsResult != null)
+                    {
+                        int EID = detailsResult.Expenseid;
+                        await _detailService.DeleteDetails(details.ExpenseDetailID);
+                        return RedirectToAction("Edit", "Expenses", new { id = EID });
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                    
                 }
                 else
                 {
@@ -143,12 +152,9 @@ namespace Expense.Controllers
             return new JsonResult(expenseTypes);
         }
 
-        private string GetExpenseTypeDescription(int expenseTypeID)
+        private async Task<string> GetExpenseTypeDescription(int expenseTypeID)
         {
-            // Implement code to fetch the description for the given expenseTypeID from your data source
-            // For example, you can query your database or use a service to get the description.
-            // Replace the following line with your actual logic.
-            var description = _detailService.GetDescriptionbByEID(expenseTypeID);
+            var description = await _detailService.GetDescriptionbByEID(expenseTypeID);
 
             return description;
         }

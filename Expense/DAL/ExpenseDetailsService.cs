@@ -9,25 +9,27 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Expense.Models.DBEntities;
 using System.Security.Cryptography;
 
+
 namespace Expense.DAL
 {
     public class ExpenseDetailsService : IExpenseDetailsService
     {
-
         private readonly ExpenseDBContext _context;
         private readonly IVatComputationService _vatComputationService;
         private readonly INetOfVatComputationService _NetOfVatComputationService;
+        private readonly IExpenseService _ExpenseService;
 
-        public ExpenseDetailsService(ExpenseDBContext context, IVatComputationService vatComputationService, INetOfVatComputationService iNetOfVatComputationService)
+        public ExpenseDetailsService(ExpenseDBContext context, IVatComputationService vatComputationService, INetOfVatComputationService iNetOfVatComputationService, IExpenseService expenseService)
         {
             this._context = context;
             this._vatComputationService = vatComputationService;
             this._NetOfVatComputationService = iNetOfVatComputationService;
+            this._ExpenseService = expenseService;
         }
 
-        public IEnumerable<ExpenseDetailsViewModel> GetExpenseDetails()
+        public async Task<IEnumerable<ExpenseDetailsViewModel>> GetExpenseDetails()
         {
-            var detailsList = _context.ExpenseDetails.Select(x => new ExpenseDetailsViewModel
+            var detailsList = await _context.ExpenseDetails.Select(x => new ExpenseDetailsViewModel
             {
                 ExpenseDetailID = x.ExpenseDetailID,
                 Expenseid = x.Expenseid,
@@ -36,14 +38,14 @@ namespace Expense.DAL
                 Remarks= x.Remarks,
                 NetOfVatAmount= x.NetOfVatAmount,
                 VatAmount= x.VatAmount
-            }).ToList();
+            }).ToListAsync();
 
             return detailsList;
         }
 
-        public ExpenseDetailsViewModel GetDetailsByID(int id)
+        public async Task<ExpenseDetailsViewModel> GetDetailsByID(int id)
         {
-            var detailsList = _context.ExpenseDetails.Where(x=> x.ExpenseDetailID == id).Select(x=> new ExpenseDetailsViewModel
+            var detailsList = await _context.ExpenseDetails.Where(x=> x.ExpenseDetailID == id).Select(x=> new ExpenseDetailsViewModel
             {
                 ExpenseDetailID= x.ExpenseDetailID,
                 Expenseid= x.Expenseid,
@@ -52,12 +54,12 @@ namespace Expense.DAL
                 Remarks= x.Remarks,
                 NetOfVatAmount = x.NetOfVatAmount,
                 VatAmount= x.VatAmount
-            }).FirstOrDefault();
+            }).FirstOrDefaultAsync();
 
             return detailsList;
         }
 
-        public void CreateDetails(CreateExpenseDetailsViewModel details)
+        public async Task CreateDetails(CreateExpenseDetailsViewModel details)
         {
             var newDetails = new ExpenseDetails()
             {
@@ -70,12 +72,12 @@ namespace Expense.DAL
             };
 
             _context.ExpenseDetails.Add(newDetails);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            UpdateHeader(details.Expenseid);
+            await UpdateHeader(details.Expenseid);
         }
 
-        public void UpdateDetails(UpdateExpenseDetailsViewModel details)
+        public async Task UpdateDetails(UpdateExpenseDetailsViewModel details)
         {
             var updateDetails = _context.ExpenseDetails.Find(details.ExpenseDetailID);
             if (updateDetails != null)
@@ -86,37 +88,37 @@ namespace Expense.DAL
                 updateDetails.NetOfVatAmount= (decimal)_NetOfVatComputationService.ComputeNetOfVat(Convert.ToDouble(details.Amount));
                 updateDetails.VatAmount = (decimal)_vatComputationService.ComputeVat(Convert.ToDouble(details.Amount));
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
-                UpdateHeader(updateDetails.Expenseid);
+                await UpdateHeader(updateDetails.Expenseid);
             }
         }
 
-        public void DeleteDetails (int id)
+        public async Task DeleteDetails (int id)
         {
             var deleteDetails = _context.ExpenseDetails.Find(id);
             if (deleteDetails != null)
             {
                 _context.ExpenseDetails.Remove(deleteDetails);
-                _context.SaveChanges();
-                UpdateHeader(deleteDetails.Expenseid);
+                await _context.SaveChangesAsync();
+                await UpdateHeader(deleteDetails.Expenseid);
             }
         }
 
-        public List<ExpensetypeViewModel> GetET()
+        public async Task<List<ExpensetypeViewModel>> GetET()
         {
-            var expenseTypes = _context.ExpenseTypes.Select(x => new ExpensetypeViewModel
+            var expenseTypes = await _context.ExpenseTypes.Select(x => new ExpensetypeViewModel
             {
                 Code = x.ExpenseTypeID.ToString(),
                 Description = x.Code + " - " + x.Description,
-            }).ToList();
+            }).ToListAsync();
 
             return expenseTypes;
         }
 
-        public string GetDescriptionbByEID(int id)
+        public async Task<string> GetDescriptionbByEID(int id)
         {
-            var description = _context.ExpenseTypes.Where(x=> x.ExpenseTypeID == id).FirstOrDefault();
+            var description = await _context.ExpenseTypes.Where(x=> x.ExpenseTypeID == id).FirstOrDefaultAsync();
             if (description != null)
             {
                 return description.Code + description.Description;
@@ -126,31 +128,27 @@ namespace Expense.DAL
             
         }
 
-        public void UpdateHeader(int id)
+        public async Task UpdateHeader(int id)
         {
-            var header = _context.Expense.Find(id);
-            decimal totalTaxableAmount = _context.ExpenseDetails
-                   .Where(ed => ed.Expenseid == id)
+            var details = await _ExpenseService.GetExpenseDetailsList(id);
+            decimal totalTaxableAmount = details
                    .Sum(ed => ed.Amount);
 
-            decimal totalNetOfVatAmount = _context.ExpenseDetails
-                .Where(ed => ed.Expenseid == id)
+            decimal totalNetOfVatAmount = details
                 .Sum(ed => ed.NetOfVatAmount);
 
             // Calculate the sum of VatAmount in ExpenseDetails
-            decimal totalVatAmount = _context.ExpenseDetails
-                .Where(ed => ed.Expenseid == id)
+            decimal totalVatAmount = details
                 .Sum(ed => ed.VatAmount);
 
+            var header = _context.Expense.Find(id);
             if (header != null)
             {
                 header.TaxableTotal = totalTaxableAmount;
                 header.NetOfVatTotal = totalNetOfVatAmount;
                 header.VatTotal = totalVatAmount;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-
-
     }
 }

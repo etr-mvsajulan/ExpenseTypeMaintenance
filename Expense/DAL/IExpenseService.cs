@@ -7,12 +7,12 @@ namespace Expense.DAL
 {
     public interface IExpenseService
     {
-        IEnumerable<ExpenseViewModel> GetExpenseList(string search = "", int page = 1, int currentPage = 1, int itemsPerPage = 10);
-        ExpenseViewModel GetExpenseByID(int id, bool isShow = true);
-        void CreateExpenseAsync(CreateExpenseViewModel expense);
-        void UpdateExpenseAsync(UpdateExpenseViewModel expense);
-        void DeleteExpenseAsync(int id);
-        string GenerateCode();
-        IEnumerable<ExpenseDetailsViewModel> GetExpenseDetailsList(int expenseid, bool isShow = true);
+        Task <IEnumerable<ExpenseViewModel>> GetExpenseList(string search = "", int page = 1, int currentPage = 1, int itemsPerPage = 10);
+        Task <ExpenseViewModel> GetExpenseByID(int id);
+        Task<int> CreateExpenseAsync(CreateExpenseViewModel expense);
+        Task UpdateExpenseAsync(UpdateExpenseViewModel expense);
+        Task DeleteExpenseAsync(int id);
+        Task<string> GenerateCode();
+        Task <IEnumerable<ExpenseDetailsViewModel>> GetExpenseDetailsList(int expenseid);
     }
 }

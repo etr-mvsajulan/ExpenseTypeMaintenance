@@ -6,12 +6,12 @@ namespace Expense.DAL
 {
     public interface IExpenseDetailsService
     {
-        IEnumerable<ExpenseDetailsViewModel> GetExpenseDetails();
-        ExpenseDetailsViewModel GetDetailsByID (int id);
-        void CreateDetails(CreateExpenseDetailsViewModel details);
-        void UpdateDetails(UpdateExpenseDetailsViewModel details);
-        void DeleteDetails(int id);
-        List<ExpensetypeViewModel> GetET();
-        string GetDescriptionbByEID (int id);
+        Task <IEnumerable<ExpenseDetailsViewModel>> GetExpenseDetails();
+        Task <ExpenseDetailsViewModel> GetDetailsByID (int id);
+        Task CreateDetails(CreateExpenseDetailsViewModel details);
+        Task UpdateDetails(UpdateExpenseDetailsViewModel details);
+        Task DeleteDetails(int id);
+        Task<List<ExpensetypeViewModel>> GetET();
+        Task<string> GetDescriptionbByEID (int id);
     }
 }

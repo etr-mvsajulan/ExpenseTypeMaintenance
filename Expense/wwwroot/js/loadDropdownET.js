@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
     // Make an AJAX request to get the list of ExpenseTypes
     $.get("/ExpenseDetails/LoadExpensetypes", function (data) {
         // Iterate through the data and populate the dropdown
@@ -9,7 +11,7 @@
             dropdown.append($('<option></option>').attr('value', entry.Code).text(entry.Description));
         });
         // Set the selected option based on the model's ExpenseTypeID
-        dropdown.find('option[value="' + expenseTypeID + '"]').prop('selected', true);
+        dropdown.val(expenseTypeID);
     });
 });
 
