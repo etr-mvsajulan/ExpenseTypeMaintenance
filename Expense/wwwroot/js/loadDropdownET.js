@@ -1,6 +1,4 @@
-﻿
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     // Make an AJAX request to get the list of ExpenseTypes
     $.get("/ExpenseDetails/LoadExpensetypes", function (data) {
         // Iterate through the data and populate the dropdown

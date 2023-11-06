@@ -146,9 +146,9 @@ namespace Expense.Controllers
 
 
         [HttpGet]
-        public JsonResult LoadExpensetypes()
+        public async Task<JsonResult> LoadExpensetypes()
         {
-            var expenseTypes = _detailService.GetET();
+            var expenseTypes = await _detailService.GetET();
             return new JsonResult(expenseTypes);
         }
 

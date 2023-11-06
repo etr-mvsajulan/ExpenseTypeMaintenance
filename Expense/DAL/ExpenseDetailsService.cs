@@ -49,8 +49,9 @@ namespace Expense.DAL
             {
                 ExpenseDetailID= x.ExpenseDetailID,
                 Expenseid= x.Expenseid,
-                ExpenseTypeID = x.ExpenseTypeID ,
-                Amount= x.Amount,
+                ExpenseTypeID = x.ExpenseTypeID,
+                Description = _context.ExpenseTypes.Where(y => y.ExpenseTypeID == x.ExpenseTypeID).Select(y => y.Code + " - " + y.Description).FirstOrDefault(),
+                Amount = x.Amount,
                 Remarks= x.Remarks,
                 NetOfVatAmount = x.NetOfVatAmount,
                 VatAmount= x.VatAmount
