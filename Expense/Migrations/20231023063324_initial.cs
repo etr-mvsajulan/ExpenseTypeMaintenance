@@ -17,8 +17,8 @@ namespace Expense.Migrations
                 {
                     ExpenseTypeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "varchar(10", nullable: false),
-                    Description = table.Column<string>(type: "varchar(55", nullable: true)
+                    Code = table.Column<string>(type: "varchar(10)", nullable: false),
+                    Description = table.Column<string>(type: "varchar(55)", nullable: true)
                 },
                 constraints: table =>
                 {

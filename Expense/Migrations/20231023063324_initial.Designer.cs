@@ -34,11 +34,11 @@ namespace Expense.Migrations
 
                     b.Property<string>("Ecode")
                         .IsRequired()
-                        .HasColumnType("varchar(50");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("description")
                         .IsRequired()
-                        .HasColumnType("varchar(50");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("id");
 
