@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Expense.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ExpenseDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<UserRegistration, IdentityRole>().AddEntityFrameworkStores<ExpenseDBContext>().AddDefaultTokenProviders();
-//builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    //.AddEntityFrameworkStores<ExpenseDBContext>();
+builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+.AddEntityFrameworkStores<ApplicationDBContext>();
 
 builder.Services.AddControllersWithViews();
 

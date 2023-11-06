@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Expense.DAL
 {
-    public class ExpenseDBContext : IdentityDbContext<UserRegistration>
+    public class ExpenseDBContext : DbContext
     {
         public ExpenseDBContext(DbContextOptions<ExpenseDBContext> options) : base(options) { }
         public DbSet<Expense.Models.DBEntities.Expense> Expense { get; set; }
@@ -16,14 +16,8 @@ namespace Expense.DAL
         public DbSet<UserRegistration> UserRegistration { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.HasSequence("MySequence");
 
-            // Configure the primary key for IdentityUserRole
-            modelBuilder.Entity<IdentityUserRole<string>>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.RoleId });
-            });
         }
     }
 }
