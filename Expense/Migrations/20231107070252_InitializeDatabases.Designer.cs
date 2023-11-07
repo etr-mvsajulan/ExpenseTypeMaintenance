@@ -4,6 +4,7 @@ using Expense.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Expense.Migrations
 {
     [DbContext(typeof(ExpenseDBContext))]
-    partial class ExpenseDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231107070252_InitializeDatabases")]
+    partial class InitializeDatabases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("dbo")
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -93,7 +95,7 @@ namespace Expense.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", "dbo");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Expense.Models.DBEntities.Expense", b =>
@@ -149,7 +151,7 @@ namespace Expense.Migrations
 
                     b.HasKey("ExpenseId");
 
-                    b.ToTable("Expense", "dbo");
+                    b.ToTable("Expense");
                 });
 
             modelBuilder.Entity("Expense.Models.DBEntities.ExpenseDetails", b =>
@@ -181,7 +183,7 @@ namespace Expense.Migrations
 
                     b.HasKey("ExpenseDetailID");
 
-                    b.ToTable("ExpenseDetails", "dbo");
+                    b.ToTable("ExpenseDetails");
                 });
 
             modelBuilder.Entity("Expense.Models.DBEntities.ExpenseTypes", b =>
@@ -202,7 +204,7 @@ namespace Expense.Migrations
 
                     b.HasKey("ExpenseTypeID");
 
-                    b.ToTable("ExpenseTypes", "dbo");
+                    b.ToTable("ExpenseTypes");
                 });
 
             modelBuilder.Entity("Expense.Models.ExpenseDetailsViewModel", b =>
@@ -241,7 +243,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("Expenseid");
 
-                    b.ToTable("ExpenseDetailsViewModel", "dbo");
+                    b.ToTable("ExpenseDetailsViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -268,7 +270,7 @@ namespace Expense.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", "dbo");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -293,7 +295,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", "dbo");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -318,7 +320,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", "dbo");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -342,7 +344,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins", "dbo");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -357,7 +359,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", "dbo");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -378,7 +380,7 @@ namespace Expense.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", "dbo");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Expense.Models.ExpenseDetailsViewModel", b =>

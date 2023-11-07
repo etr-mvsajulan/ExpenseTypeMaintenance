@@ -10,9 +10,14 @@ using Expense.Models.DBEntities;
 using Expense.Models;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
+using System.Web.Http;
+using System.Security.Claims;
 
 namespace Expense.Controllers
 {
+
+    [ServiceFilter(typeof(AuthorizeActionFilter))]
+    [Authorize]
     public class ExpensesController : Controller
     {
         private readonly IExpenseService _expenseService;
@@ -25,8 +30,8 @@ namespace Expense.Controllers
         // GET: Expenses
         public async Task<IActionResult> Index(string searchExpense, int page = 1, int currentPage = 1, int itemsPerPage = 5)
         {
-
-            var expense = await Task.Run(() => _expenseService.GetExpenseList(searchExpense));
+            var code = User.FindFirst("CostUnitCode")?.Value;
+            var expense = await Task.Run(() => _expenseService.GetExpenseList(searchExpense, costunitcode: Convert.ToString(code)));
             int skip = (page - 1) * itemsPerPage;
             var itemsOnPage = expense.Skip(skip).Take(itemsPerPage).ToList();
             int totalPages = (int)Math.Ceiling((double)expense.Count() / itemsPerPage);
@@ -42,7 +47,9 @@ namespace Expense.Controllers
             ViewBag.LastPage = totalPages;
 
             return itemsOnPage != null ? View(itemsOnPage) : Problem("Entity set 'ExpenseDBContext.Expense'  is null.");
+            
         }
+               
 
         // GET: Expenses/Details/5
         public async Task <IActionResult> Details(int id)
@@ -63,8 +70,8 @@ namespace Expense.Controllers
         }
 
         // POST: Expenses/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateExpenseViewModel expense)
         {
             int ExpenseID = -1;
@@ -94,8 +101,8 @@ namespace Expense.Controllers
 
         // POST: Expenses/Edit/5
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateExpenseViewModel expense)
         {
             try
@@ -139,8 +146,8 @@ namespace Expense.Controllers
         }
 
         // POST: Expenses/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.ActionName("Delete")]
+        [Microsoft.AspNetCore.Mvc.ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(ExpenseViewModel expense)
         {
             try

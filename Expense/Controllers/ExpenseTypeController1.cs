@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
 using System.Security.Cryptography.Xml;
+using System.Web.Http;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Expense.Controllers
 {
+    [ServiceFilter(typeof(AuthorizeActionFilter))]
+    [Authorize]
     public class ExpenseTypeController1 : Controller
     {
         private readonly IExpenseTypeService _expenseTypeService;
@@ -16,7 +19,7 @@ namespace Expense.Controllers
         {
             this._expenseTypeService = expenseTypeService;
         }
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult Index(string searchs, int page = 1, int currentPage = 1, int itemsPerPage = 5)
         {
 
@@ -37,7 +40,7 @@ namespace Expense.Controllers
             ViewBag.LastPage = totalPages;
             return View(itemsOnPage);
         }
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult Create()
         {
             string sequence = _expenseTypeService.GenerateCode();
@@ -69,7 +72,7 @@ namespace Expense.Controllers
             }
         }
 
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult Edit(int ID)
         {
             try
@@ -92,7 +95,7 @@ namespace Expense.Controllers
             }
             
         }
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Edit(UpdateExpenseTypeModel model)
         {
             try
@@ -139,7 +142,7 @@ namespace Expense.Controllers
             
         }
 
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Delete(ExpensetypeViewModel model)
         {
             try

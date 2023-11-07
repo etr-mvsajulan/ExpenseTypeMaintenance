@@ -4,16 +4,19 @@ using Expense.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Expense.Migrations
+namespace Expense.Migrations.ApplicationDB
 {
-    [DbContext(typeof(ExpenseDBContext))]
-    partial class ExpenseDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ApplicationDBContext))]
+    [Migration("20231107015501_UodateDa")]
+    partial class UodateDa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,155 +96,7 @@ namespace Expense.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", "dbo");
-                });
-
-            modelBuilder.Entity("Expense.Models.DBEntities.Expense", b =>
-                {
-                    b.Property<int>("ExpenseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseId"));
-
-                    b.Property<string>("CostUnitCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CostUnitName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("NetOfVatTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TaxableTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TransactionNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("VatTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ExpenseId");
-
-                    b.ToTable("Expense", "dbo");
-                });
-
-            modelBuilder.Entity("Expense.Models.DBEntities.ExpenseDetails", b =>
-                {
-                    b.Property<int>("ExpenseDetailID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseDetailID"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ExpenseTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Expenseid")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("NetOfVatAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("VatAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ExpenseDetailID");
-
-                    b.ToTable("ExpenseDetails", "dbo");
-                });
-
-            modelBuilder.Entity("Expense.Models.DBEntities.ExpenseTypes", b =>
-                {
-                    b.Property<int>("ExpenseTypeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseTypeID"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ExpenseTypeID");
-
-                    b.ToTable("ExpenseTypes", "dbo");
-                });
-
-            modelBuilder.Entity("Expense.Models.ExpenseDetailsViewModel", b =>
-                {
-                    b.Property<int>("ExpenseDetailID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "ID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseDetailID"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExpenseTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Expenseid")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("NetOfVatAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("VatAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ExpenseDetailID");
-
-                    b.HasIndex("Expenseid");
-
-                    b.ToTable("ExpenseDetailsViewModel", "dbo");
+                    b.ToTable("User", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -268,7 +123,7 @@ namespace Expense.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", "dbo");
+                    b.ToTable("Role", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -357,7 +212,7 @@ namespace Expense.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", "dbo");
+                    b.ToTable("UserRole", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -379,15 +234,6 @@ namespace Expense.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", "dbo");
-                });
-
-            modelBuilder.Entity("Expense.Models.ExpenseDetailsViewModel", b =>
-                {
-                    b.HasOne("Expense.Models.DBEntities.Expense", null)
-                        .WithMany("ExpenseDetails")
-                        .HasForeignKey("Expenseid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,11 +285,6 @@ namespace Expense.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Expense.Models.DBEntities.Expense", b =>
-                {
-                    b.Navigation("ExpenseDetails");
                 });
 #pragma warning restore 612, 618
         }

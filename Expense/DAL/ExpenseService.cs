@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Expense.Models.DBEntities;
+using System.Security.Claims;
 
 namespace Expense.DAL
 {
@@ -20,9 +21,10 @@ namespace Expense.DAL
             this._context = context;
         }
 
-        public async Task <IEnumerable<ExpenseViewModel>> GetExpenseList(string search, int page = 1, int currentPage = 1, int itemsPerPage = 5)
+        public async Task <IEnumerable<ExpenseViewModel>> GetExpenseList(string search, int page = 1, int currentPage = 1, int itemsPerPage = 5, string costunitcode = "")
         {
-            var expenseList = await _context.Expense.Where(x=> string.IsNullOrEmpty(search) || x.TransactionNumber.Contains(search)).Select(x => new ExpenseViewModel
+            
+            var expenseList = await _context.Expense.Where(x => ( string.IsNullOrEmpty(search) || x.TransactionNumber.Contains(search)) && x.CostUnitCode == costunitcode).Select(x => new ExpenseViewModel
             {
                 ExpenseId = x.ExpenseId,
                 TransactionNumber = x.TransactionNumber,

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Expense.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ExpenseDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-.AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ExpenseDBContext>();
 
 builder.Services.AddControllersWithViews();
 
@@ -24,12 +24,14 @@ builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IExpenseDetailsService, ExpenseDetailsService>();
 builder.Services.AddScoped<IVatComputationService, VatComputationService>();
 builder.Services.AddScoped<INetOfVatComputationService, NetOfVatComputationService>();
+builder.Services.AddScoped<AuthorizeActionFilter>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Use original property names
     // Other options can be configured here
 });
+
 //builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 var app = builder.Build();
@@ -48,6 +50,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

@@ -25,12 +25,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CostUnitCode" class="control-label"></label>
-                <input asp-for="CostUnitCode" class="form-control" />
+                <input asp-for="CostUnitCode" class="form-control" value="@User.FindFirst("CostUnitCode")?.Value" readonly/>
                 <span asp-validation-for="CostUnitCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CostUnitName" class="control-label"></label>
-                <input asp-for="CostUnitName" class="form-control" />
+                <input asp-for="CostUnitName" class="form-control" value="@User.FindFirst("CostUnitName")?.Value" readonly />
                 <span asp-validation-for="CostUnitName" class="text-danger"></span>
             </div>           
             <div class="form-group">

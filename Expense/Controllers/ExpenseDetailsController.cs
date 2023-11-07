@@ -9,9 +9,12 @@ using Expense.DAL;
 using Expense.Models;
 using Expense.Models.DBEntities;
 using NuGet.Protocol.Core.Types;
+using System.Web.Http;
 
 namespace Expense.Controllers
 {
+    [ServiceFilter(typeof(AuthorizeActionFilter))]
+    [Authorize]
     public class ExpenseDetailsController : Controller
     {
         private readonly IExpenseDetailsService _detailService;
@@ -48,7 +51,7 @@ namespace Expense.Controllers
         }
 
         // POST: ExpenseDetails/Create
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateExpenseDetailsViewModel details)
         {
@@ -74,7 +77,7 @@ namespace Expense.Controllers
         }
 
         // POST: ExpenseDetails/Edit/5
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateExpenseDetailsViewModel details)
         {
@@ -112,7 +115,7 @@ namespace Expense.Controllers
         }
 
         // POST: ExpenseDetails/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(ExpenseDetailsViewModel details)
         {
@@ -145,7 +148,7 @@ namespace Expense.Controllers
         }
 
 
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<JsonResult> LoadExpensetypes()
         {
             var expenseTypes = await _detailService.GetET();

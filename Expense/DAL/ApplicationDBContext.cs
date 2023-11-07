@@ -15,22 +15,22 @@ namespace Expense.DAL
             base.OnModelCreating(builder);
 
             builder.HasDefaultSchema("dbo");
-            builder.Entity<ApplicationUser>(
+            builder.Entity<IdentityUser>(
                     entity =>
                     {
-                        entity.ToTable(name: "User");
+                        entity.ToTable(name: "Users");
                     }
                 );
             builder.Entity<IdentityRole>(
                    entity =>
                    {
-                       entity.ToTable(name: "Role");
+                       entity.ToTable(name: "Roles");
                    }
                );
             builder.Entity<IdentityUserRole<string>>(
                     entity =>
                     {
-                        entity.ToTable(name: "UserRole");
+                        entity.ToTable(name: "UserRoles");
                     }
                 );
             builder.Entity<IdentityUserClaim<string>>(
@@ -57,7 +57,5 @@ namespace Expense.DAL
                     }
                 );
         } 
-
-        public DbSet<UserRegistration> UserRegistration { get; set; }
     }
 }

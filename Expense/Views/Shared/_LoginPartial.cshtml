@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Expense.Models.DBEntities
 
-@inject SignInManager<UserRegistration> SignInManager
-@inject UserManager<UserRegistration> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
